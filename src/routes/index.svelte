@@ -35,6 +35,7 @@
   img {
     width: 100%;
     max-width: 400px;
+    border-radius: 50%;
   }
 
   @media (max-width: 1020px) {
@@ -66,12 +67,13 @@
 
 <div class="home-container">
   <div class="home-copy">
-    <h1>Welcome to your new Sapper Blog</h1>
-    <p>Check out the docs on <a href="https://www.github.com/Charca/sapper-blog-template" target="_blank">GitHub</a> to get started.</p>
+    <h1>Muktazam Hasbi Ashidiqi</h1>
+    <p>Did you know that peaches, pears, apricots, quinces, strawberries, and apples are members of the rose family?</p>
+    <p>They are come from the same <strong>Rosaceae</strong> family.</p>
   </div>
 
   <figure>
-    <img alt='Person typing on laptop' src='undraw-illustration.svg'>
-    <figcaption>Illustration thanks to <a href="https://undraw.co" target="_blank">Undraw</a></figcaption>
+    <img alt='Profile photo from github' src='https://avatars3.githubusercontent.com/u/10528000?v=3&s=300'>
+    <!-- <figcaption>Illustration thanks to <a href="https://undraw.co" target="_blank">Undraw</a></figcaption> -->
   </figure>
 </div>
