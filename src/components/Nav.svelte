@@ -44,7 +44,7 @@
   }
 
   .selected::before {
-    background: #7FDBB6;
+    background: #7381d2;
   }
 </style>
 
