@@ -62,14 +62,33 @@
 </style>
 
 <svelte:head>
-  <title>Sapper Blog Template</title>
+  <title>Muktazam Hasbi Ashidiqi</title>
+  <meta name="description"
+    content="My name is Muktazam Hasbi. I writes about tech, mainly linux stuff and my stories in this blog. Recently interested with JAMstack technologies. This blog is made with ❤️ with Sapper." />
+  <meta name="keywords" content="profile, jamstack, frontend, backend, fullstack, ui, ux, ux designer, ui designer, " />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="http://localhost:3000/">
+  <meta property="og:title" content="Muktazam Hasbi Ashidiqi">
+  <meta property="og:description"
+    content="My name is Muktazam Hasbi. I writes about tech, mainly linux stuff and my stories in this blog. Recently interested with JAMstack technologies. This blog is made with ❤️ with Sapper.">
+  <meta property="og:image" content="https://avatars3.githubusercontent.com/u/10528000?v=3&s=300">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="http://localhost:3000/">
+  <meta property="twitter:title" content="Muktazam Hasbi Ashidiqi">
+  <meta property="twitter:description"
+    content="My name is Muktazam Hasbi. I writes about tech, mainly linux stuff and my stories in this blog. Recently interested with JAMstack technologies. This blog is made with ❤️ with Sapper.">
+  <meta property="twitter:image" content="https://avatars3.githubusercontent.com/u/10528000?v=3&s=300">
 </svelte:head>
 
 <div class="home-container">
   <div class="home-copy">
     <h1>Muktazam Hasbi Ashidiqi</h1>
-    <p>Did you know that peaches, pears, apricots, quinces, strawberries, and apples are members of the rose family?</p>
-    <p>They are come from the same <strong>Rosaceae</strong> family.</p>
+    <p>Did you know that peaches, pears, apricots, quinces, strawberries, and apples are members of the rose family?
+      They are come from the same <strong>Rosaceae</strong> family.</p>
   </div>
 
   <figure>

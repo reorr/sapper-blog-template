@@ -15,6 +15,8 @@
 
 <script>
   import Bio from '../../components/Bio.svelte'
+  import { siteUrl } from '../../stores/_config.js';
+
   export let post
 </script>
 
@@ -42,6 +44,26 @@
 
 <svelte:head>
   <title>{post.title}</title>
+  <meta name="description" content="{post.description}" />
+  <meta name="keywords" content="{post.keywords}" />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{siteUrl}/blog/{post.slug}">
+  <meta property="og:title" content="{post.title}">
+  <meta property="og:description" content="{post.description}">
+  {#if post.thumb}
+  <meta property="og:image" content="{post.thumb}">
+  {/if}
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="{siteUrl}/blog/{post.slug}">
+  <meta property="twitter:title" content="{post.title}">
+  <meta property="twitter:description" content="{post.description}">
+  {#if post.thumb}
+  <meta property="twitter:image" content="{post.thumb}">
+  {/if}
 </svelte:head>
 
 <header>

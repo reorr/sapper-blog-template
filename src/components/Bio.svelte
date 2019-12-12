@@ -19,11 +19,10 @@
 </style>
 
 <div>
-  <img src="profile-pic.png" alt="Maxi Ferreira">
+  <img src="https://avatars3.githubusercontent.com/u/10528000?v=3&s=100" alt="Maxi Ferreira">
   <p>
-    Hi, I'm <strong>Maxi</strong>. I'm a software engineer and data scientist from Córdoba, Argentina.
-    You can follow me on <a href="https://www.twitter.com/Charca" target="_blank">Twitter</a>,
-    see some of my work on <a href="https://www.github.com/Charca" target="_blank">GitHub</a>,
-    or read more about me on <a href="https://www.maxiferreira.com" target="_blank">my website</a>.
+    My name is <strong>Muktazam Hasbi</strong>. I writes about tech, mainly linux stuff and my stories in this blog.
+    You can see some of my work on <a href="https://www.github.com/reorr" target="_blank"
+      rel="noopener noreferrer">GitHub</a>.
   </p>
 </div>

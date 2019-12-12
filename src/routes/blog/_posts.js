@@ -15,18 +15,18 @@ const EXCERPT_SEPARATOR = '<!-- more -->'
 const renderer = new marked.Renderer()
 const linkRenderer = renderer.link;
 renderer.link = (href, title, text) => {
-    const html = linkRenderer.call(renderer, href, title, text)
+  const html = linkRenderer.call(renderer, href, title, text)
 
-    if (href.indexOf('/') === 0) {
-      // Do not open internal links on new tab
-      return html
-    } else if (href.indexOf('#') === 0) {
-      // Handle hash links to internal elements
-      const html = linkRenderer.call(renderer, 'javascript:;', title, text)
-      return html.replace(/^<a /, `<a onclick="document.location.hash='${href.substr(1)}';" `)
-    }
+  if (href.indexOf('/') === 0) {
+    // Do not open internal links on new tab
+    return html
+  } else if (href.indexOf('#') === 0) {
+    // Handle hash links to internal elements
+    const html = linkRenderer.call(renderer, 'javascript:;', title, text)
+    return html.replace(/^<a /, `<a onclick="document.location.hash='${href.substr(1)}';" `)
+  }
 
-    return html.replace(/^<a /, '<a target="_blank" rel="nofollow" ')
+  return html.replace(/^<a /, '<a target="_blank" rel="nofollow" ')
 }
 
 renderer.code = (code, language) => {
@@ -42,7 +42,7 @@ const posts = fs.readdirSync(POSTS_DIR)
   .map(fileName => {
     const fileMd = fs.readFileSync(path.join(POSTS_DIR, fileName), 'utf8')
     const { data, content: rawContent } = matter(fileMd)
-    const { title, date } = data
+    const { title, date, description, keywords, tags } = data
     const slug = fileName.split('.')[0]
     let content = rawContent
     let excerpt = ''
@@ -63,6 +63,9 @@ const posts = fs.readdirSync(POSTS_DIR)
       slug,
       html,
       date,
+      description,
+      keywords,
+      tags,
       excerpt,
       printDate,
       printReadingTime,

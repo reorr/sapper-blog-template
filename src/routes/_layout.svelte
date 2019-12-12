@@ -38,7 +38,7 @@
 </style>
 
 <div class="layout">
-  <Header {segment}/>
+  <Header {segment} />
 
   <main>
     <slot></slot>
@@ -46,9 +46,9 @@
 
   <footer>
     <span>
-      &copy; {new Date().getFullYear()} Your Blog.
-      Powered by <a href="https://sapper.svelte.dev" target="_blank">Sapper</a>.
-      Template by <a href="https://www.twitter.com/Charca" target="_blank">Maxi Ferreira</a>.
+      &copy; {new Date().getFullYear()} Muktazam Hasbi.
+      Powered by <a href="https://sapper.svelte.dev" target="_blank" rel="noopener noreferrer">Sapper</a>.
+      Template by <a href="https://www.twitter.com/Charca" target="_blank" rel="noopener noreferrer">Maxi Ferreira</a>.
     </span>
   </footer>
 </div>
