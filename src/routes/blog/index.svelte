@@ -7,6 +7,8 @@
 </script>
 
 <script>
+  import { siteUrl } from '../../stores/_config.js';
+
   export let posts;
 </script>
 
@@ -30,7 +32,23 @@
 </style>
 
 <svelte:head>
-  <title>Blog</title>
+  <title>Muktazam's Blog</title>
+  <meta name="description" content="This blog is made with ❤️ with Sapper." />
+  <meta name="keywords" content="profile, jamstack, frontend, backend, fullstack, ui, ux, ux designer, ui designer, " />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{siteUrl}/blog/">
+  <meta property="og:title" content="Muktazam's Blog">
+  <meta property="og:description" content="This blog is made with ❤️ with Sapper.">
+  <meta property="og:image" content="https://avatars3.githubusercontent.com/u/10528000?v=3&s=300">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="{siteUrl}/blog/">
+  <meta property="twitter:title" content="Muktazam's Blog">
+  <meta property="twitter:description" content="This blog is made with ❤️ with Sapper.">
+  <meta property="twitter:image" content="https://avatars3.githubusercontent.com/u/10528000?v=3&s=300">
 </svelte:head>
 
 <div class="container">
