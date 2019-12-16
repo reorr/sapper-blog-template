@@ -15,7 +15,7 @@
 
 <script>
   import Bio from '../../components/Bio.svelte'
-  import { siteUrl } from '../../stores/_config.js';
+  import { siteUrl } from '../../stores/_config.js'
 
   export let post
 </script>
