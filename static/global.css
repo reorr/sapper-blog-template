@@ -177,6 +177,10 @@ td {
   margin: 1em 0;
 }
 
+footer a {
+  color: #36393b;
+}
+
 @media (max-width: 1020px) {
   h1 {
     font-size: 3em;
