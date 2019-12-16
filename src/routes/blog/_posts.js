@@ -26,7 +26,7 @@ renderer.link = (href, title, text) => {
     return html.replace(/^<a /, `<a onclick="document.location.hash='${href.substr(1)}';" `)
   }
 
-  return html.replace(/^<a /, '<a target="_blank" rel="nofollow" ')
+  return html.replace(/^<a /, '<a target="_blank" rel="noopener" ')
 }
 
 renderer.code = (code, language) => {
