@@ -31,11 +31,6 @@
     text-align: center;
   }
 
-  figcaption {
-    font-size: .8em;
-    font-style: italic;
-  }
-
   img {
     width: 100%;
     max-width: 400px;
@@ -97,6 +92,5 @@
 
   <figure>
     <img alt='Profile photo from github' src='https://avatars3.githubusercontent.com/u/10528000?v=3&s=300'>
-    <!-- <figcaption>Illustration thanks to <a href="https://undraw.co" target="_blank">Undraw</a></figcaption> -->
   </figure>
 </div>
