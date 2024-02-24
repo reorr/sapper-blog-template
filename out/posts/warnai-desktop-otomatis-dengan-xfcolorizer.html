@@ -1,0 +1,167 @@
+<header><style>
+    /* CSS Reset */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    
+	/* Import Inconsolata font */
+    @import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&display=swap');
+
+	:root {
+		--text-color: #333; /* Default text color */
+		--background-color: #fff; /* Default background color */
+	}
+
+	@media (prefers-color-scheme: dark) {
+		/* Dark theme */
+		:root {
+		  --text-color: #ddd; /* Dark text color */
+		  --background-color: #222; /* Dark background color */
+		}
+	}
+
+	/* For screens wider than 1200px (desktops and large screens) */
+	@media only screen and (min-width: 1200px) {
+		#container {
+			max-width: 800px;
+			margin: 0 auto; /* Center the div horizontally */
+		}
+	}
+	
+	/* For screens wider than 992px but less than or equal to 1200px (large desktops) */
+	@media only screen and (max-width: 1200px) {
+		#container {
+			max-width: 600px;
+			margin: 0 auto; /* Center the div horizontally */
+		}
+	}
+	
+	/* For screens wider than 576px but less than or equal to 992px (tablets and smaller desktops) */
+	@media only screen and (max-width: 992px) {
+		#container {
+			max-width: calc(100% - 20px);
+			margin: 0 auto; /* Center the div horizontally */
+		}
+	}
+	
+	/* For screens less than or equal to 576px (mobile devices) */
+	@media only screen and (max-width: 576px) {
+		#container {
+			width: calc(100% - 20px); /* Full width minus 20px margin */
+			margin-left: 10px; /* Add left margin to align with the body */
+			margin-right: 10px; /* Add right margin to align with the body */
+		}
+	}
+
+	body {
+		color: var(--text-color);
+		background-color: var(--background-color);
+	}
+
+	#container {
+		padding: 10px;
+	}
+
+	p {
+        margin-bottom: 2rem;
+		text-align: justify;
+		line-height: 1.5;
+    }
+
+	pre {
+		display: inline-block;
+		white-space: nowrap;
+		overflow-x: auto;
+		overflow-y: clip;
+		width: 100%;
+		padding: 1rem;
+		border-radius: 0.5rem;
+	}
+
+	/* Apply Inconsolata font to code elements within p and pre elements */
+	p code,
+	pre code {
+		font-family: 'Inconsolata', monospace;
+	}
+	
+	p code {
+		padding: 0.1rem 0.5rem;
+		border-radius: 0.25rem;
+		color: var(--code-text-color);
+		background-color: var(--code-background-color);
+	}
+	
+	/* Dark and light mode for code elements within p and pre elements */
+	@media (prefers-color-scheme: dark) {
+		p code {
+			--code-text-color: #eee; /* Dark code text color */
+			--code-background-color: #444; /* Dark code background color */
+		}
+	}
+	
+	@media (prefers-color-scheme: light) {
+		p code {
+			--code-text-color: #333; /* Light code text color */
+			--code-background-color: #f0f0f0; /* Light code background color */
+		}
+	}
+
+	img {
+		width: 100%;
+	}
+	</style></header>
+<body>
+<div id="container">
+<h1 id="warnai-desktop-otomatis-dengan-xfcolorizer">Warnai Desktop Otomatis dengan xfcolorizer</h1>
+<hr />
+<p>tags:</p>
+<ul>
+<li>gtk</li>
+<li>pyhon</li>
+<li>Ricing</li>
+<li>xfwm<br />
+categories:</li>
+<li>Alat</li>
+<li>Destop</li>
+<li>Linux<br />
+featured_image: posts/xfcolorizer-01.png<br />
+date: 2017-06-06 09:12:57</li>
+</ul>
+<hr />
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p><img src="/static/images/xfcolorizer/xfcolorizer-01.png" alt="xfcolorizer" /></p>
+<p>Ceritanya saya suka modding desktop, tapi lama kelamaan bosen tema yang ada cuma itu-itu saya. Saya menggunakan lingkungan destop xfce yang tidak mendukung perubahan warna jendela otomatis sesuai dengan warna latar belakang. Setelah saya menjelah, saya menemukan tema yang enak untuk tampilah sehari-hari, namun, ya itu tadi, hanya ada beberapa fork dari tema tersebut, sehingga kurang mendukung warna dari latar belakang. Jalan satu-satunya adalah dengan mengedit file tema yang sudah ada, dan jika setiap ganti latar belakang haru mengedit lagi, pastilah tidak efisien. Terpikirlah ide untuk membuat alat yang memudahkan untuk menyesuaikan warna tema gtk dan xfwm dengan skema warna latar belakang, maka rilis lah xfcolorizer.</p>
+<p>Xfcolorizer merupakan alat berbasis bahasa python dan bash yang secara otomatis menyesuaikan warna tema sesuai warna gambar pilihan. Xfcolorizer akan mengubah tema xfcolorize yang merupakan fork dari adapta. Dengan menggunakan alat ini, maka kita tidak usah susah-susah mengedit file tema, sehingga orang awam pun bisa menggunakannya. Ada beberapa dependensi yang harus dipasang sebelum menggunakan alat ini, yaitu:</p>
+<ol>
+<li>Inkscape</li>
+<li>python3</li>
+<li>colorthief</li>
+</ol>
+<p>Inkscape dan python3 dapat dipasang dari repo masing-masing distro, sedangkan untuk color thief, dapat dipasang menggunakan perintah</p>
+<pre><code>$ pip install colorthief
+</code></pre>
+<p>Perintah yang digunakan untuk menjalankan xfcolorizer adalah</p>
+<pre><code>$ python3 xfcolorizer -i /direktori/menuju/gambar.jpg
+</code></pre>
+<p>Selain itu, jika kita ingin menggunakan warna pilihan kita untuk warna jendela dan panel, dapat menggunakan perintah</p>
+<pre><code>$ python3 xfcolorizer -i /direktori/menuju/gambar.jpg/png -w &quot;hex warna pilihan&quot;
+</code></pre>
+<p>Setelah itu alat ini akan berjalan untuk mengubah warna dan menerapkan tema dan latar belakang secara otomatis, tunggu sebentar karena saat mengubah tema gtk perlu dilakukan perenderan aset-aset.</p>
+<p>Taraaa!!! Destopmu sudah terwarnai sesuai dengan warna latar belakang.</p>
+<h3 id="tangkapan-layar">Tangkapan Layar</h3>
+<p><img src="/static/images/xfcolorizer/xfcolorizer-01.png" alt="01" /><br />
+<img src="/static/images/xfcolorizer/xfcolorizer-02.png" alt="02" /><br />
+<img src="/static/images/xfcolorizer/xfcolorizer-03.png" alt="03" /><br />
+<img src="/static/images/xfcolorizer/xfcolorizer-04.png" alt="04" /><br />
+<img src="/static/images/xfcolorizer/xfcolorizer-05.png" alt="05" /><br />
+<img src="/static/images/xfcolorizer/xfcolorizer-06.png" alt="06" /></p>
+<p>Xfcolorizer bisa diunduh dari github saya <a href="https://github.com/reorr/xfcolorizer">di sini</a>.</p>
+<h3 id="edit">Edit</h3>
+<p>Tertanggal tanggal 29 Desember 2018, lumbung xfcolorizer saya <em>archive</em>-kan. Saya tidak ada niatan untuk me-<em>maintenance</em> proyek tersebut. Namun jangan sedih, saya punya proyek baru yang bernama &quot;warnai&quot; yang fungsinya lebih yahud daripada xfcolorizer.</p>
+<p>warnai dapat diunduh dari tautan <a href="https://github.com/reorr/warnai">ini</a>.</p>
+
+</div>
+</body>

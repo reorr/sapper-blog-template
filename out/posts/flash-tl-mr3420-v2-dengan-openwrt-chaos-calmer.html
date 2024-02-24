@@ -1,0 +1,170 @@
+<header><style>
+    /* CSS Reset */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    
+	/* Import Inconsolata font */
+    @import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&display=swap');
+
+	:root {
+		--text-color: #333; /* Default text color */
+		--background-color: #fff; /* Default background color */
+	}
+
+	@media (prefers-color-scheme: dark) {
+		/* Dark theme */
+		:root {
+		  --text-color: #ddd; /* Dark text color */
+		  --background-color: #222; /* Dark background color */
+		}
+	}
+
+	/* For screens wider than 1200px (desktops and large screens) */
+	@media only screen and (min-width: 1200px) {
+		#container {
+			max-width: 800px;
+			margin: 0 auto; /* Center the div horizontally */
+		}
+	}
+	
+	/* For screens wider than 992px but less than or equal to 1200px (large desktops) */
+	@media only screen and (max-width: 1200px) {
+		#container {
+			max-width: 600px;
+			margin: 0 auto; /* Center the div horizontally */
+		}
+	}
+	
+	/* For screens wider than 576px but less than or equal to 992px (tablets and smaller desktops) */
+	@media only screen and (max-width: 992px) {
+		#container {
+			max-width: calc(100% - 20px);
+			margin: 0 auto; /* Center the div horizontally */
+		}
+	}
+	
+	/* For screens less than or equal to 576px (mobile devices) */
+	@media only screen and (max-width: 576px) {
+		#container {
+			width: calc(100% - 20px); /* Full width minus 20px margin */
+			margin-left: 10px; /* Add left margin to align with the body */
+			margin-right: 10px; /* Add right margin to align with the body */
+		}
+	}
+
+	body {
+		color: var(--text-color);
+		background-color: var(--background-color);
+	}
+
+	#container {
+		padding: 10px;
+	}
+
+	p {
+        margin-bottom: 2rem;
+		text-align: justify;
+		line-height: 1.5;
+    }
+
+	pre {
+		display: inline-block;
+		white-space: nowrap;
+		overflow-x: auto;
+		overflow-y: clip;
+		width: 100%;
+		padding: 1rem;
+		border-radius: 0.5rem;
+	}
+
+	/* Apply Inconsolata font to code elements within p and pre elements */
+	p code,
+	pre code {
+		font-family: 'Inconsolata', monospace;
+	}
+	
+	p code {
+		padding: 0.1rem 0.5rem;
+		border-radius: 0.25rem;
+		color: var(--code-text-color);
+		background-color: var(--code-background-color);
+	}
+	
+	/* Dark and light mode for code elements within p and pre elements */
+	@media (prefers-color-scheme: dark) {
+		p code {
+			--code-text-color: #eee; /* Dark code text color */
+			--code-background-color: #444; /* Dark code background color */
+		}
+	}
+	
+	@media (prefers-color-scheme: light) {
+		p code {
+			--code-text-color: #333; /* Light code text color */
+			--code-background-color: #f0f0f0; /* Light code background color */
+		}
+	}
+
+	img {
+		width: 100%;
+	}
+	</style></header>
+<body>
+<div id="container">
+<h1 id="flash-tl-mr3420-v2-dengan-openwrt-chaos-calmer">Flash TL-MR3420 v2 Dengan Openwrt Chaos Calmer</h1>
+<hr />
+<p>tags:</p>
+<ul>
+<li>chaos calmer</li>
+<li>mr3420</li>
+<li>openwrt</li>
+<li>router<br />
+categories:</li>
+<li>tutorial<br />
+featured_image: posts/flash_mr3420.png<br />
+date: 2017-07-13 10:38:04</li>
+</ul>
+<hr />
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p><img src="/static/images/flash-mr3420/flash_mr3420.png" alt="Cara Flash TL-MR3420 v2" /></p>
+<p>Pertama-tama kita siapkan dulu alat dan bahannya</p>
+<ol>
+<li>Router TP-LINK TL-MR3420 V2</li>
+<li>Komputer/Laptop/Smartphone</li>
+<li>Firmware openwrt chaos calmer (jika sudah punya)</li>
+<li>Kopi/Teh/Sirup sisa lebaran kemarin (opsional)</li>
+<li>Cemilan (opsional)</li>
+</ol>
+<p>Jika semua hal di atas sudah disiapkan, mari kita langsung eksekusi cara flash openwrt pada perangkat TL-MR3420 V2.</p>
+<ol start="6">
+<li>Jika belum punya firmware openwrt chaos calmer, bisa anda unduh di <a href="https://wiki.openwrt.org/toh/tp-link/tl-mr3420">sini</a>, pilih yang openwrt-15.05.1-ar71xx-generic-tl-mr3420-v2-squashfs-factory.bin. jangan pilih yang sysupgrade.bin, nanti saya kasih tahu alasannya.</li>
+<li>Sambungkan komputer dengan router.</li>
+<li>Pastikan sambungan terhubung dengan baik, dengan cara ping ke 192.168.0.1</li>
+<li>Buka browser favorit anda, lalu masuk ke router dengan mengetikkan 192.168.0.1 pada address bar dan tekan enter.</li>
+<li>Masuk ke bagian system tools &gt; firmware upgrade, pilih firmware yang sudah diunduh tadi.</li>
+</ol>
+<p><img src="/static/images/flash-mr3420/screenshot_2017-07-10_14-23-35.png" alt="screenshot_2017-07-10_14-23-35.png" /></p>
+<p><img src="/static/images/flash-mr3420/screenshot_2017-07-10_14-24-17.png" alt="screenshot_2017-07-10_14-24-17.png" /></p>
+<ol start="11">
+<li>Klik tombol upgrade dan tunggu sampai router restart.</li>
+</ol>
+<p><img src="/static/images/flash-mr3420/screenshot_2017-07-10_14-24-24.png" alt="screenshot_2017-07-10_14-24-24.png" /></p>
+<ol start="12">
+<li>Untuk mengecek apakah sudah terpasang openwrt coba ping ke 192.168.1.1, jika sukses berarti anda berhasil.</li>
+<li>Taraa… router anda telah terpasang openwrt, selamat mengoprek.</li>
+</ol>
+<p>P: Lo… kok… hmmm… perasaan di langkah ke lima ada yang salah deh, kok yang dipilih malah yang upgrade, bukan factory?</p>
+<p>S: Nah, ini pertanyaan yang saya tunggu dari jaman batu. Entah lagi ngantuk atau kesambet, saya salah flash yang sysupgrade, seharusnya jika masih memakai firmware original, maka kita harus menggunakan yang factory. Image sysupgrade digunakan bila router sudah dalam posisi terpasang openwrt/ddwrt.</p>
+<p>P: Terus, itu routernya nggak papa? Nggak ngebrik?</p>
+<p>S: Tenang saja, kalo salah firmware seperti saya masih bisa diakses kok routernya, coba masuk ke 192.168.1.1 lewat browser, nanti bakalan masuk ke LuCI. Masalahnya adalah setelah router direstart, semua settingan akan kembali ke default, mau dioprek gimana aja ya bakalan balik lagi ke awal.</p>
+<p>P: Nah lo, cara benerinnya gimana tuh?</p>
+<p>S: Gampil bgt deh, caranya masuk ke LuCI dulu, habis itu di menu System pilih Backup/Flash Firmware. Nah kita browse file yang sysupgrade, karena router kita sudah terpasang openwrt. Klik tombol Flash Image, dan tunggu sampai router reboot. Insyaallah router kita sudah sehat dan sudah terpasang openwrt dengan semestinya.</p>
+<p>P: Wuih… otw flash openwrt gan!!!</p>
+<p>S: Monggo, bila ada keluhan silahkan hubungi dokter terdekat saya melalui komentar/pm akun facebook saya.   Keterangan P = Penanya (tokoh fiktif) S= Saya (aku, ingsung, kula, abdi, me, boku, ore, watashi)</p>
+
+</div>
+</body>

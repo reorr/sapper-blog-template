@@ -1,0 +1,261 @@
+<header><style>
+    /* CSS Reset */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    
+	/* Import Inconsolata font */
+    @import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&display=swap');
+
+	:root {
+		--text-color: #333; /* Default text color */
+		--background-color: #fff; /* Default background color */
+	}
+
+	@media (prefers-color-scheme: dark) {
+		/* Dark theme */
+		:root {
+		  --text-color: #ddd; /* Dark text color */
+		  --background-color: #222; /* Dark background color */
+		}
+	}
+
+	/* For screens wider than 1200px (desktops and large screens) */
+	@media only screen and (min-width: 1200px) {
+		#container {
+			max-width: 800px;
+			margin: 0 auto; /* Center the div horizontally */
+		}
+	}
+	
+	/* For screens wider than 992px but less than or equal to 1200px (large desktops) */
+	@media only screen and (max-width: 1200px) {
+		#container {
+			max-width: 600px;
+			margin: 0 auto; /* Center the div horizontally */
+		}
+	}
+	
+	/* For screens wider than 576px but less than or equal to 992px (tablets and smaller desktops) */
+	@media only screen and (max-width: 992px) {
+		#container {
+			max-width: calc(100% - 20px);
+			margin: 0 auto; /* Center the div horizontally */
+		}
+	}
+	
+	/* For screens less than or equal to 576px (mobile devices) */
+	@media only screen and (max-width: 576px) {
+		#container {
+			width: calc(100% - 20px); /* Full width minus 20px margin */
+			margin-left: 10px; /* Add left margin to align with the body */
+			margin-right: 10px; /* Add right margin to align with the body */
+		}
+	}
+
+	body {
+		color: var(--text-color);
+		background-color: var(--background-color);
+	}
+
+	#container {
+		padding: 10px;
+	}
+
+	p {
+        margin-bottom: 2rem;
+		text-align: justify;
+		line-height: 1.5;
+    }
+
+	pre {
+		display: inline-block;
+		white-space: nowrap;
+		overflow-x: auto;
+		overflow-y: clip;
+		width: 100%;
+		padding: 1rem;
+		border-radius: 0.5rem;
+	}
+
+	/* Apply Inconsolata font to code elements within p and pre elements */
+	p code,
+	pre code {
+		font-family: 'Inconsolata', monospace;
+	}
+	
+	p code {
+		padding: 0.1rem 0.5rem;
+		border-radius: 0.25rem;
+		color: var(--code-text-color);
+		background-color: var(--code-background-color);
+	}
+	
+	/* Dark and light mode for code elements within p and pre elements */
+	@media (prefers-color-scheme: dark) {
+		p code {
+			--code-text-color: #eee; /* Dark code text color */
+			--code-background-color: #444; /* Dark code background color */
+		}
+	}
+	
+	@media (prefers-color-scheme: light) {
+		p code {
+			--code-text-color: #333; /* Light code text color */
+			--code-background-color: #f0f0f0; /* Light code background color */
+		}
+	}
+
+	img {
+		width: 100%;
+	}
+	</style></header>
+<body>
+<div id="container">
+<h1 id="how-to-make-xfce4-panel-behave-like-elementary-os-panel">How To Make Xfce4-panel Behave Like Elementary OS Panel</h1>
+<h2 id="date-2019-02-25-200031">date: 2019-02-25 20:00:31</h2>
+<p>tags:</p>
+<ul>
+<li>ricing<br />
+categories:</li>
+<li>Linux</li>
+</ul>
+<hr />
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>By behave like Elementary OS i mean the ability to change panel opacity automatically when there any maximized windows in current workspace. I like this behavior very much, having solid panel color when in desktop dont feels aestethic for me. I will explain how my script works below.</p>
+<h1 id="get-current-active-workspace">Get current active workspace</h1>
+<p>We can achive this with <code>wmctrl</code> command.</p>
+<pre tabindex="0" style="color:#fff;background-color:#1f1f24;"><code><span style="display:flex;"><span>$ wmctrl -d
+</span></span><span style="display:flex;"><span><span style="color:#d0bf69">0</span>  * DG: 1600x900  VP: 0,0  WA: 0,0 1600x867   一
+</span></span><span style="display:flex;"><span><span style="color:#d0bf69">1</span>  - DG: 1600x900  VP: N/A  WA: 0,0 1600x867   二
+</span></span><span style="display:flex;"><span><span style="color:#d0bf69">2</span>  - DG: 1600x900  VP: N/A  WA: 0,0 1600x867   三
+</span></span><span style="display:flex;"><span><span style="color:#d0bf69">3</span>  - DG: 1600x900  VP: N/A  WA: 0,0 1600x867   四
+</span></span></code></pre><p>The star character indicate the current active workspace. We only need current workspace number, so we must cut it</p>
+<pre tabindex="0" style="color:#fff;background-color:#1f1f24;"><code><span style="display:flex;"><span>$ wmctrl -d | grep -w <span style="color:#fc6a5d">&#34;*&#34;</span> | cut -d<span style="color:#fc6a5d">&#34; &#34;</span> -f <span style="color:#d0bf69">1</span>
+</span></span><span style="display:flex;"><span><span style="color:#d0bf69">0</span>
+</span></span></code></pre><p><code>grep -w &quot;*&quot;</code> command print only lines with * character in it. Then we cut it to get that workspace number.</p>
+<h1 id="get-window-list-in-current-workspace">Get window list in current workspace</h1>
+<p>After we get the current active workspace, we can get window list with <code>wmctrl -l</code> command.<br />
+Ofcourse the output is a mess.</p>
+<pre tabindex="0" style="color:#fff;background-color:#1f1f24;"><code><span style="display:flex;"><span>$ wmctrl -l
+</span></span><span style="display:flex;"><span>0x00a00004 -1 Chamelemon xfce4-panel
+</span></span><span style="display:flex;"><span>0x00c00003 -1 Chamelemon Desktop
+</span></span><span style="display:flex;"><span>0x01e00009  <span style="color:#d0bf69">0</span> Chamelemon fish in ~
+</span></span><span style="display:flex;"><span>0x03c00011  <span style="color:#d0bf69">0</span> Chamelemon elementary OS <span style="color:#d0bf69">5</span> Juno is Here – elementary – Medium - Mozilla Firefox
+</span></span><span style="display:flex;"><span>0x04800002  <span style="color:#d0bf69">0</span> Chamelemon FBReader - Toaru Majutsu no Index - Volume <span style="color:#d0bf69">18</span>
+</span></span><span style="display:flex;"><span>0x0183807f  <span style="color:#d0bf69">0</span> Chamelemon Hiburan - File Manager
+</span></span><span style="display:flex;"><span>0x04400006  <span style="color:#d0bf69">0</span> Chamelemon Telegram (80759)
+</span></span><span style="display:flex;"><span>0x06000009  <span style="color:#d0bf69">0</span> Chamelemon fish in ~/S/r/my-hexo-blog
+</span></span><span style="display:flex;"><span>0x06800001  <span style="color:#d0bf69">0</span> Chamelemon Moeditor - How-To-Make-Xfce4-panel-Behave-Like-Elementary-OS-Panel.md
+</span></span><span style="display:flex;"><span>0x05e00009  <span style="color:#d0bf69">0</span> Chamelemon fish in ~
+</span></span></code></pre><p>Fist column indicate window id, second column indicate workspace, third column indicate hostname, and last column indicate window title. Just like the method we use to get current active workspace number, we need to eliminate lines without current workspace number, and cut it to get the first column.</p>
+<pre tabindex="0" style="color:#fff;background-color:#1f1f24;"><code><span style="display:flex;"><span>$ wmctrl -l | grep -w <span style="color:#fc6a5d">&#34;0&#34;</span> | cut -d<span style="color:#fc6a5d">&#39; &#39;</span> -f1
+</span></span><span style="display:flex;"><span>0x01e00009
+</span></span><span style="display:flex;"><span>0x03c00011
+</span></span><span style="display:flex;"><span>0x04800002
+</span></span><span style="display:flex;"><span>0x0183807f
+</span></span><span style="display:flex;"><span>0x04400006
+</span></span><span style="display:flex;"><span>0x06000009
+</span></span><span style="display:flex;"><span>0x06800001
+</span></span><span style="display:flex;"><span>0x05e00009
+</span></span></code></pre><p>There it is, we got our window id in current active workspace.</p>
+<h1 id="get-window-state">Get window state</h1>
+<p>Wether the window is maximized or unmaximized, minimized or unminimized, it's called window state. <code>xprop</code> it a tiny utility to get those window state. You can get all those state with <code>xprop -id &quot;win_id&quot;</code>, change win_id with correspondent windows id that you want to see. The output is more of a mess than <code>wmctrl</code> command, so i dont print that here.</p>
+<p>Window state that we want to get appear in <code>_NET_WM_STATE(ATOM)</code> line. We want to get state that include <code>_NET_WM_STATE_MAXIMIZED_HORZ</code> and <code>_NET_WM_STATE_MAXIMIZED_VERT</code>, but exclude <code>_NET_WM_STATE_HIDDEN</code>. Because we dont want to include the minimized windows.</p>
+<h1 id="get-current-panel-opacity-and-change-panel-opacity">Get current panel opacity and change panel opacity</h1>
+<p>With xfconf-query we can manipulate xfce4-panel configuration easily through terminal. Type command below to get current panel opacity.</p>
+<pre tabindex="0" style="color:#fff;background-color:#1f1f24;"><code><span style="display:flex;"><span>$ xfconf-query -c xfce4-panel -p /panels/panel-1/background-alpha
+</span></span><span style="display:flex;"><span><span style="color:#d0bf69">100</span>
+</span></span></code></pre><p>The output (100) is my current panel opacity.</p>
+<p>To manipulate that value, just add <code>-s</code> flag followed by desired value (0-100) in above command like this.</p>
+<pre><code>$ xfconf-query -c xfce4-panel -p /panels/panel-1/background-alpha -s 50
+</code></pre>
+<p>That command will chage the panel opacity immediately to 50%.</p>
+<p>That's all the basic, we need to wrap it up to make a script that will do it automatically.</p>
+<h1 id="wrap-the-script">Wrap the script</h1>
+<pre tabindex="0" style="color:#fff;background-color:#1f1f24;"><code><span style="display:flex;"><span><span style="color:#fd8f3f">#!/bin/env bash
+</span></span></span><span style="display:flex;"><span><span style="color:#fd8f3f"></span>
+</span></span><span style="display:flex;"><span><span style="color:#41a1c0">min</span>=<span style="color:#d0bf69">40</span>
+</span></span><span style="display:flex;"><span><span style="color:#41a1c0">max</span>=<span style="color:#d0bf69">100</span>
+</span></span><span style="display:flex;"><span><span style="color:#41a1c0">curr_alpha</span>=<span style="color:#fc5fa3">$(</span>xfconf-query -c xfce4-panel -p /panels/panel-1/background-alpha<span style="color:#fc5fa3">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#41a1c0">curr_desktop</span>=<span style="color:#fc5fa3">$(</span>wmctrl -d | grep -w <span style="color:#fc6a5d">&#34;*&#34;</span> | cut -d<span style="color:#fc6a5d">&#34; &#34;</span> -f 1<span style="color:#fc5fa3">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#41a1c0">arr</span>=()
+</span></span></code></pre><p>min is our minimum opacity value, while max is the maximum value we want. curr_alpha variable store current opacity value of our panel. arr=() is array variable, we need it to store list of maximized windows that unminimized. curr_desktop store our current active workspace.</p>
+<p>next.</p>
+<pre tabindex="0" style="color:#fff;background-color:#1f1f24;"><code><span style="display:flex;"><span><span style="color:#fc5fa3">for</span> i in <span style="color:#fc6a5d">`</span>wmctrl -l | grep -w <span style="color:#fc6a5d">&#34;</span><span style="color:#41a1c0">$curr_desktop</span><span style="color:#fc6a5d">&#34;</span> | cut -d<span style="color:#fc6a5d">&#39; &#39;</span> -f1<span style="color:#fc6a5d">`</span>; <span style="color:#fc5fa3">do</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#41a1c0">exist</span>=<span style="color:#fc5fa3">$(</span>xprop -id <span style="color:#fc6a5d">&#34;</span><span style="color:#41a1c0">$i</span><span style="color:#fc6a5d">&#34;</span> | grep <span style="color:#fc6a5d">&#34;_NET_WM_STATE(ATOM)&#34;</span> | grep <span style="color:#fc6a5d">&#34;_NET_WM_STATE_MAXIMIZED_VERT&#34;</span> | grep <span style="color:#fc6a5d">&#34;_NET_WM_STATE_MAXIMIZED_HORZ&#34;</span> | grep -v <span style="color:#fc6a5d">&#34;_NET_WM_STATE_HIDDEN&#34;</span><span style="color:#fc5fa3">)</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#fc5fa3">if</span> [ -z <span style="color:#41a1c0">$exist</span> ]; <span style="color:#fc5fa3">then</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#d0a8ff">echo</span> <span style="color:#fc6a5d">&#34;unmaximized&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#fc5fa3">else</span>
+</span></span><span style="display:flex;"><span>		arr[<span style="color:#fc6a5d">${#</span><span style="color:#41a1c0">arr</span>[@]<span style="color:#fc6a5d">}</span>]=<span style="color:#fc6a5d">&#34;maximized&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#fc5fa3">fi</span>
+</span></span><span style="display:flex;"><span><span style="color:#fc5fa3">done</span>
+</span></span></code></pre><p>We loop through all windows id that exist in our current workspace to get window state. If we got window that are maximized and unmaximized, we add item to arr variable.</p>
+<pre tabindex="0" style="color:#fff;background-color:#1f1f24;"><code><span style="display:flex;"><span><span style="color:#fc5fa3">if</span> [ <span style="color:#fc6a5d">${#</span><span style="color:#41a1c0">arr</span>[@]<span style="color:#fc6a5d">}</span> -eq <span style="color:#d0bf69">0</span> ]; <span style="color:#fc5fa3">then</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#fc5fa3">for</span> ((<span style="color:#41a1c0">i</span>=<span style="color:#41a1c0">$curr_alpha</span>; i&gt;=<span style="color:#41a1c0">$min</span>; i--)) ; <span style="color:#fc5fa3">do</span>
+</span></span><span style="display:flex;"><span>		xfconf-query -c xfce4-panel -p /panels/panel-1/background-alpha -s <span style="color:#41a1c0">$i</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#fc5fa3">done</span>;
+</span></span><span style="display:flex;"><span><span style="color:#fc5fa3">else</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#fc5fa3">for</span> ((<span style="color:#41a1c0">i</span>=<span style="color:#41a1c0">$curr_alpha</span>; i&lt;=<span style="color:#41a1c0">$max</span>; i++)) ; <span style="color:#fc5fa3">do</span>
+</span></span><span style="display:flex;"><span>		xfconf-query -c xfce4-panel -p /panels/panel-1/background-alpha -s <span style="color:#41a1c0">$i</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#fc5fa3">done</span>;
+</span></span><span style="display:flex;"><span><span style="color:#fc5fa3">fi</span>
+</span></span></code></pre><p>If arr variable is empty, it will set panel opacity to minimum, and vice versa. The change will done gradually creating animate effect.</p>
+<p>Full script</p>
+<pre tabindex="0" style="color:#fff;background-color:#1f1f24;"><code><span style="display:flex;"><span><span style="color:#fd8f3f">#!/bin/env bash
+</span></span></span><span style="display:flex;"><span><span style="color:#fd8f3f"></span>
+</span></span><span style="display:flex;"><span><span style="color:#41a1c0">min</span>=<span style="color:#d0bf69">40</span>
+</span></span><span style="display:flex;"><span><span style="color:#41a1c0">max</span>=<span style="color:#d0bf69">100</span>
+</span></span><span style="display:flex;"><span><span style="color:#41a1c0">curr_alpha</span>=<span style="color:#fc5fa3">$(</span>xfconf-query -c xfce4-panel -p /panels/panel-1/background-alpha<span style="color:#fc5fa3">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#41a1c0">curr_desktop</span>=<span style="color:#fc5fa3">$(</span>wmctrl -d | grep -w <span style="color:#fc6a5d">&#34;*&#34;</span> | cut -d<span style="color:#fc6a5d">&#34; &#34;</span> -f 1<span style="color:#fc5fa3">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#41a1c0">arr</span>=()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#fc5fa3">for</span> i in <span style="color:#fc6a5d">`</span>wmctrl -l | grep -w <span style="color:#fc6a5d">&#34;</span><span style="color:#41a1c0">$curr_desktop</span><span style="color:#fc6a5d">&#34;</span> | cut -d<span style="color:#fc6a5d">&#39; &#39;</span> -f1<span style="color:#fc6a5d">`</span>; <span style="color:#fc5fa3">do</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#41a1c0">exist</span>=<span style="color:#fc5fa3">$(</span>xprop -id <span style="color:#fc6a5d">&#34;</span><span style="color:#41a1c0">$i</span><span style="color:#fc6a5d">&#34;</span> | grep <span style="color:#fc6a5d">&#34;_NET_WM_STATE(ATOM)&#34;</span> | grep <span style="color:#fc6a5d">&#34;_NET_WM_STATE_MAXIMIZED_VERT&#34;</span> | grep <span style="color:#fc6a5d">&#34;_NET_WM_STATE_MAXIMIZED_HORZ&#34;</span> | grep -v <span style="color:#fc6a5d">&#34;_NET_WM_STATE_HIDDEN&#34;</span><span style="color:#fc5fa3">)</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#fc5fa3">if</span> [ -z <span style="color:#41a1c0">$exist</span> ]; <span style="color:#fc5fa3">then</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#d0a8ff">echo</span> <span style="color:#fc6a5d">&#34;unmaximized&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#fc5fa3">else</span>
+</span></span><span style="display:flex;"><span>		arr[<span style="color:#fc6a5d">${#</span><span style="color:#41a1c0">arr</span>[@]<span style="color:#fc6a5d">}</span>]=<span style="color:#fc6a5d">&#34;maximized&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#fc5fa3">fi</span>
+</span></span><span style="display:flex;"><span><span style="color:#fc5fa3">done</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#fc5fa3">if</span> [ <span style="color:#fc6a5d">${#</span><span style="color:#41a1c0">arr</span>[@]<span style="color:#fc6a5d">}</span> -eq <span style="color:#d0bf69">0</span> ]; <span style="color:#fc5fa3">then</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#fc5fa3">for</span> ((<span style="color:#41a1c0">i</span>=<span style="color:#41a1c0">$curr_alpha</span>; i&gt;=<span style="color:#41a1c0">$min</span>; i--)) ; <span style="color:#fc5fa3">do</span>
+</span></span><span style="display:flex;"><span>		xfconf-query -c xfce4-panel -p /panels/panel-1/background-alpha -s <span style="color:#41a1c0">$i</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#fc5fa3">done</span>;
+</span></span><span style="display:flex;"><span><span style="color:#fc5fa3">else</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#fc5fa3">for</span> ((<span style="color:#41a1c0">i</span>=<span style="color:#41a1c0">$curr_alpha</span>; i&lt;=<span style="color:#41a1c0">$max</span>; i++)) ; <span style="color:#fc5fa3">do</span>
+</span></span><span style="display:flex;"><span>		xfconf-query -c xfce4-panel -p /panels/panel-1/background-alpha -s <span style="color:#41a1c0">$i</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#fc5fa3">done</span>;
+</span></span><span style="display:flex;"><span><span style="color:#fc5fa3">fi</span>
+</span></span></code></pre><p>Save as <code>change-panel.sh</code>, and dont forget to set the script as executable</p>
+<pre tabindex="0" style="color:#fff;background-color:#1f1f24;"><code><span style="display:flex;"><span>$ chmod +x change-panel.sh
+</span></span></code></pre><p>Try to execute it in terminal while unmaximized and when maximized to see the change. Move that script to your <code>$PATH</code> directory, so you can execute it everywhere.</p>
+<p>Now we need to run that script automatically every window event changed. Remember how i hide title bar when my windows is maximized? Yep, i'm using orcsome to listen window event. I just need to change my <code>rc.py</code> a little to looks like this</p>
+<pre tabindex="0" style="color:#fff;background-color:#1f1f24;"><code><span style="display:flex;"><span><span style="color:#fc5fa3">from</span> orcsome <span style="color:#fc5fa3">import</span> get_wm
+</span></span><span style="display:flex;"><span><span style="color:#fc5fa3">import</span> orcsome
+</span></span><span style="display:flex;"><span><span style="color:#fc5fa3">import</span> subprocess
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>wm = get_wm()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@wm.on_manage
+</span></span><span style="display:flex;"><span><span style="color:#fc5fa3">def</span> <span style="color:#41a1c0">on_manage</span>():
+</span></span><span style="display:flex;"><span>    @wm.on_property_change(wm.event_window, <span style="color:#fc6a5d">&#39;_NET_WM_STATE&#39;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#fc5fa3">def</span> <span style="color:#41a1c0">property_was_set</span>():
+</span></span><span style="display:flex;"><span>        w = wm.event_window
+</span></span><span style="display:flex;"><span>        <span style="color:#fc5fa3">if</span> w.maximized_vert and w.maximized_horz:
+</span></span><span style="display:flex;"><span>            <span style="color:#fc5fa3">if</span> w.decorated:
+</span></span><span style="display:flex;"><span>                wm.set_window_state(w, decorate=<span style="color:#fc5fa3">False</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#fc5fa3">else</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#fc5fa3">if</span> not w.decorated:
+</span></span><span style="display:flex;"><span>                wm.set_window_state(w, decorate=<span style="color:#fc5fa3">True</span>)
+</span></span><span style="display:flex;"><span>        subprocess.call([<span style="color:#fc6a5d">&#39;change-panel&#39;</span>])
+</span></span></code></pre><!-- raw HTML omitted -->
+<p>Preview:</p>
+<!-- raw HTML omitted -->
+
+</div>
+</body>

@@ -1,0 +1,431 @@
+<header><style>
+    /* CSS Reset */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    
+	/* Import Inconsolata font */
+    @import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&display=swap');
+
+	:root {
+		--text-color: #333; /* Default text color */
+		--background-color: #fff; /* Default background color */
+	}
+
+	@media (prefers-color-scheme: dark) {
+		/* Dark theme */
+		:root {
+		  --text-color: #ddd; /* Dark text color */
+		  --background-color: #222; /* Dark background color */
+		}
+	}
+
+	/* For screens wider than 1200px (desktops and large screens) */
+	@media only screen and (min-width: 1200px) {
+		#container {
+			max-width: 800px;
+			margin: 0 auto; /* Center the div horizontally */
+		}
+	}
+	
+	/* For screens wider than 992px but less than or equal to 1200px (large desktops) */
+	@media only screen and (max-width: 1200px) {
+		#container {
+			max-width: 600px;
+			margin: 0 auto; /* Center the div horizontally */
+		}
+	}
+	
+	/* For screens wider than 576px but less than or equal to 992px (tablets and smaller desktops) */
+	@media only screen and (max-width: 992px) {
+		#container {
+			max-width: calc(100% - 20px);
+			margin: 0 auto; /* Center the div horizontally */
+		}
+	}
+	
+	/* For screens less than or equal to 576px (mobile devices) */
+	@media only screen and (max-width: 576px) {
+		#container {
+			width: calc(100% - 20px); /* Full width minus 20px margin */
+			margin-left: 10px; /* Add left margin to align with the body */
+			margin-right: 10px; /* Add right margin to align with the body */
+		}
+	}
+
+	body {
+		color: var(--text-color);
+		background-color: var(--background-color);
+	}
+
+	#container {
+		padding: 10px;
+	}
+
+	p {
+        margin-bottom: 2rem;
+		text-align: justify;
+		line-height: 1.5;
+    }
+
+	pre {
+		display: inline-block;
+		white-space: nowrap;
+		overflow-x: auto;
+		overflow-y: clip;
+		width: 100%;
+		padding: 1rem;
+		border-radius: 0.5rem;
+	}
+
+	/* Apply Inconsolata font to code elements within p and pre elements */
+	p code,
+	pre code {
+		font-family: 'Inconsolata', monospace;
+	}
+	
+	p code {
+		padding: 0.1rem 0.5rem;
+		border-radius: 0.25rem;
+		color: var(--code-text-color);
+		background-color: var(--code-background-color);
+	}
+	
+	/* Dark and light mode for code elements within p and pre elements */
+	@media (prefers-color-scheme: dark) {
+		p code {
+			--code-text-color: #eee; /* Dark code text color */
+			--code-background-color: #444; /* Dark code background color */
+		}
+	}
+	
+	@media (prefers-color-scheme: light) {
+		p code {
+			--code-text-color: #333; /* Light code text color */
+			--code-background-color: #f0f0f0; /* Light code background color */
+		}
+	}
+
+	img {
+		width: 100%;
+	}
+	</style></header>
+<body>
+<div id="container">
+<h1 id="openbox-pseudo-tiling---default-settings-and-bash-scripting">'[Openbox] Pseudo Tiling - Default Settings and Bash Scripting'</h1>
+<h2 id="date-2019-01-04-183453">date: 2019-01-04 18:34:53</h2>
+<p>tags:</p>
+<ul>
+<li>tiling</li>
+<li>archlinux</li>
+<li>openbox</li>
+<li>wm</li>
+<li>ricing<br />
+category:</li>
+<li>Linux</li>
+</ul>
+<hr />
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>As we all know, Openbox is a floating window manager. For mouse user it maybe easy, but for me that always lazying and use laptop in my bed, it's hard to navigate, especially when i want to see multiple windows at once. That's where tiling needed. Unlike in tiling window manager, we must bind keys to tile our window, so i called it Pseudo-Tiling.</p>
+<p>I have two ways to tile window in openbox. Using only <code>rc.xml</code> config and using bash script and bind it in <code>rc.xml</code>. Each one of them has it's pros and cons. In this article I will explain both of them.</p>
+<h2 id="rcxml">rc.xml</h2>
+<p>We can't really using openbox without <code>rc.xml</code>. Almost all of openbox configs are stored there, from keybind, mousebind, selected openbox theme, and many other things. And my config rely on keybind settings.</p>
+<p>Openbox has <code>MoveResizeTo</code> action that like it's name let us move and resize window in specific location and size. It can be either represented by pixel or percent.</p>
+<pre tabindex="0" style="color:#fff;background-color:#1f1f24;"><code><span style="display:flex;"><span>&lt;action name=<span style="color:#fc6a5d">&#34;MoveResizeTo&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;x&gt;34%&lt;/x&gt;
+</span></span><span style="display:flex;"><span>  &lt;y&gt;2%&lt;/y&gt;
+</span></span><span style="display:flex;"><span>  &lt;height&gt;96%&lt;/height&gt;
+</span></span><span style="display:flex;"><span>  &lt;width&gt;32%&lt;/width&gt;
+</span></span><span style="display:flex;"><span>&lt;/action&gt;
+</span></span></code></pre><p>The configuration above will move our window to 34% from left and 2% from top of the screen, and will resize to 96% in height and 32% in width. However, it only works on unmaximized windows. To make it works on maximized windows, we must first unmaximize that window. It can be done if we add this action:</p>
+<pre tabindex="0" style="color:#fff;background-color:#1f1f24;"><code><span style="display:flex;"><span>&lt;action name=<span style="color:#fc6a5d">&#34;Unmaximize&#34;</span>/&gt;
+</span></span></code></pre><p>Add it above the <code>MoveResizeTo</code> action. Thus, our configuration will looks like:</p>
+<pre tabindex="0" style="color:#fff;background-color:#1f1f24;"><code><span style="display:flex;"><span>&lt;action name=<span style="color:#fc6a5d">&#34;Unmaximize&#34;</span>/&gt;
+</span></span><span style="display:flex;"><span>&lt;action name=<span style="color:#fc6a5d">&#34;MoveResizeTo&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;x&gt;34%&lt;/x&gt;
+</span></span><span style="display:flex;"><span>  &lt;y&gt;2%&lt;/y&gt;
+</span></span><span style="display:flex;"><span>  &lt;height&gt;96%&lt;/height&gt;
+</span></span><span style="display:flex;"><span>  &lt;width&gt;32%&lt;/width&gt;
+</span></span><span style="display:flex;"><span>&lt;/action&gt;
+</span></span></code></pre><p>Don't forget to bind keys or that configuration won't be applicable. In my case, I bind it to <code>Super+x</code> key.</p>
+<pre tabindex="0" style="color:#fff;background-color:#1f1f24;"><code><span style="display:flex;"><span>&lt;keybind key=<span style="color:#fc6a5d">&#34;W-x&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;action name=<span style="color:#fc6a5d">&#34;Unmaximize&#34;</span>/&gt;
+</span></span><span style="display:flex;"><span>  &lt;action name=<span style="color:#fc6a5d">&#34;MoveResizeTo&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;x&gt;34%&lt;/x&gt;
+</span></span><span style="display:flex;"><span>    &lt;y&gt;2%&lt;/y&gt;
+</span></span><span style="display:flex;"><span>    &lt;height&gt;96%&lt;/height&gt;
+</span></span><span style="display:flex;"><span>    &lt;width&gt;32%&lt;/width&gt;
+</span></span><span style="display:flex;"><span>  &lt;/action&gt;
+</span></span><span style="display:flex;"><span>&lt;/keybind&gt;
+</span></span></code></pre><p>Now we can tile our window to center with 1/3 monitor width if we press <code>Super+x</code>.</p>
+<h3 id="configuration">Configuration</h3>
+<p>What else?</p>
+<p>Ofcourse, we need to bind other keys like tile to left with 1/3 monitor width, etc, etc. Below is my current pseudo-tiling configuration. Add it beetween <code>&lt;keyboard&gt;&lt;/keyboard&gt;</code> tag.</p>
+<pre tabindex="0" style="color:#fff;background-color:#1f1f24;"><code><span style="display:flex;"><span><span style="color:#6c7986">&lt;!-- gaps 2 windows --&gt;</span>
+</span></span><span style="display:flex;"><span>&lt;keybind key=<span style="color:#fc6a5d">&#34;A-W-Up&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;action name=<span style="color:#fc6a5d">&#34;Unmaximize&#34;</span>/&gt;
+</span></span><span style="display:flex;"><span>  &lt;action name=<span style="color:#fc6a5d">&#34;MoveResizeTo&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;x&gt;1%&lt;/x&gt;
+</span></span><span style="display:flex;"><span>    &lt;y&gt;2%&lt;/y&gt;
+</span></span><span style="display:flex;"><span>    &lt;width&gt;98%&lt;/width&gt;
+</span></span><span style="display:flex;"><span>    &lt;height&gt;47%&lt;/height&gt;
+</span></span><span style="display:flex;"><span>  &lt;/action&gt;
+</span></span><span style="display:flex;"><span>&lt;/keybind&gt;
+</span></span><span style="display:flex;"><span>&lt;keybind key=<span style="color:#fc6a5d">&#34;A-W-Down&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;action name=<span style="color:#fc6a5d">&#34;Unmaximize&#34;</span>/&gt;
+</span></span><span style="display:flex;"><span>  &lt;action name=<span style="color:#fc6a5d">&#34;MoveResizeTo&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;x&gt;1%&lt;/x&gt;
+</span></span><span style="display:flex;"><span>    &lt;y&gt;-2%&lt;/y&gt;
+</span></span><span style="display:flex;"><span>    &lt;width&gt;98%&lt;/width&gt;
+</span></span><span style="display:flex;"><span>    &lt;height&gt;47%&lt;/height&gt;
+</span></span><span style="display:flex;"><span>  &lt;/action&gt;
+</span></span><span style="display:flex;"><span>&lt;/keybind&gt;
+</span></span><span style="display:flex;"><span>&lt;keybind key=<span style="color:#fc6a5d">&#34;A-W-Right&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;action name=<span style="color:#fc6a5d">&#34;Unmaximize&#34;</span>/&gt;
+</span></span><span style="display:flex;"><span>  &lt;action name=<span style="color:#fc6a5d">&#34;MoveResizeTo&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;x&gt;-1%&lt;/x&gt;
+</span></span><span style="display:flex;"><span>    &lt;y&gt;2%&lt;/y&gt;
+</span></span><span style="display:flex;"><span>    &lt;width&gt;48%&lt;/width&gt;
+</span></span><span style="display:flex;"><span>    &lt;height&gt;96%&lt;/height&gt;
+</span></span><span style="display:flex;"><span>  &lt;/action&gt;
+</span></span><span style="display:flex;"><span>&lt;/keybind&gt;
+</span></span><span style="display:flex;"><span>&lt;keybind key=<span style="color:#fc6a5d">&#34;A-W-Left&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;action name=<span style="color:#fc6a5d">&#34;Unmaximize&#34;</span>/&gt;
+</span></span><span style="display:flex;"><span>  &lt;action name=<span style="color:#fc6a5d">&#34;MoveResizeTo&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;x&gt;1%&lt;/x&gt;
+</span></span><span style="display:flex;"><span>    &lt;y&gt;2%&lt;/y&gt;
+</span></span><span style="display:flex;"><span>    &lt;width&gt;49%&lt;/width&gt;
+</span></span><span style="display:flex;"><span>    &lt;height&gt;96%&lt;/height&gt;
+</span></span><span style="display:flex;"><span>  &lt;/action&gt;
+</span></span><span style="display:flex;"><span>&lt;/keybind&gt;
+</span></span><span style="display:flex;"><span><span style="color:#6c7986">&lt;!--gaps 3 windows--&gt;</span>
+</span></span><span style="display:flex;"><span>&lt;keybind key=<span style="color:#fc6a5d">&#34;W-z&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;action name=<span style="color:#fc6a5d">&#34;Unmaximize&#34;</span>/&gt;
+</span></span><span style="display:flex;"><span>  &lt;action name=<span style="color:#fc6a5d">&#34;MoveResizeTo&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;x&gt;1%&lt;/x&gt;
+</span></span><span style="display:flex;"><span>    &lt;y&gt;2%&lt;/y&gt;
+</span></span><span style="display:flex;"><span>    &lt;height&gt;96%&lt;/height&gt;
+</span></span><span style="display:flex;"><span>    &lt;width&gt;32%&lt;/width&gt;
+</span></span><span style="display:flex;"><span>  &lt;/action&gt;
+</span></span><span style="display:flex;"><span>&lt;/keybind&gt;
+</span></span><span style="display:flex;"><span>&lt;keybind key=<span style="color:#fc6a5d">&#34;W-x&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;action name=<span style="color:#fc6a5d">&#34;Unmaximize&#34;</span>/&gt;
+</span></span><span style="display:flex;"><span>  &lt;action name=<span style="color:#fc6a5d">&#34;MoveResizeTo&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;x&gt;34%&lt;/x&gt;
+</span></span><span style="display:flex;"><span>    &lt;y&gt;2%&lt;/y&gt;
+</span></span><span style="display:flex;"><span>    &lt;height&gt;96%&lt;/height&gt;
+</span></span><span style="display:flex;"><span>    &lt;width&gt;32%&lt;/width&gt;
+</span></span><span style="display:flex;"><span>  &lt;/action&gt;
+</span></span><span style="display:flex;"><span>&lt;/keybind&gt;
+</span></span><span style="display:flex;"><span>&lt;keybind key=<span style="color:#fc6a5d">&#34;W-c&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;action name=<span style="color:#fc6a5d">&#34;Unmaximize&#34;</span>/&gt;
+</span></span><span style="display:flex;"><span>  &lt;action name=<span style="color:#fc6a5d">&#34;MoveResizeTo&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;x&gt;-1%&lt;/x&gt;
+</span></span><span style="display:flex;"><span>    &lt;y&gt;2%&lt;/y&gt;
+</span></span><span style="display:flex;"><span>    &lt;height&gt;96%&lt;/height&gt;
+</span></span><span style="display:flex;"><span>    &lt;width&gt;32%&lt;/width&gt;
+</span></span><span style="display:flex;"><span>  &lt;/action&gt;
+</span></span><span style="display:flex;"><span>&lt;/keybind&gt;
+</span></span><span style="display:flex;"><span><span style="color:#6c7986">&lt;!-- gaps 4 windows--&gt;</span>
+</span></span><span style="display:flex;"><span>&lt;keybind key=<span style="color:#fc6a5d">&#34;W-h&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;action name=<span style="color:#fc6a5d">&#34;Unmaximize&#34;</span>/&gt;
+</span></span><span style="display:flex;"><span>  &lt;action name=<span style="color:#fc6a5d">&#34;MoveResizeTo&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;x&gt;1%&lt;/x&gt;
+</span></span><span style="display:flex;"><span>    &lt;y&gt;2%&lt;/y&gt;
+</span></span><span style="display:flex;"><span>    &lt;height&gt;47%&lt;/height&gt;
+</span></span><span style="display:flex;"><span>    &lt;width&gt;49%&lt;/width&gt;
+</span></span><span style="display:flex;"><span>  &lt;/action&gt;
+</span></span><span style="display:flex;"><span>&lt;/keybind&gt;
+</span></span><span style="display:flex;"><span>&lt;keybind key=<span style="color:#fc6a5d">&#34;W-j&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;action name=<span style="color:#fc6a5d">&#34;Unmaximize&#34;</span>/&gt;
+</span></span><span style="display:flex;"><span>  &lt;action name=<span style="color:#fc6a5d">&#34;MoveResizeTo&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;x&gt;-1%&lt;/x&gt;
+</span></span><span style="display:flex;"><span>    &lt;y&gt;2%&lt;/y&gt;
+</span></span><span style="display:flex;"><span>    &lt;height&gt;47%&lt;/height&gt;
+</span></span><span style="display:flex;"><span>    &lt;width&gt;48%&lt;/width&gt;
+</span></span><span style="display:flex;"><span>  &lt;/action&gt;
+</span></span><span style="display:flex;"><span>&lt;/keybind&gt;
+</span></span><span style="display:flex;"><span>&lt;keybind key=<span style="color:#fc6a5d">&#34;W-k&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;action name=<span style="color:#fc6a5d">&#34;Unmaximize&#34;</span>/&gt;
+</span></span><span style="display:flex;"><span>  &lt;action name=<span style="color:#fc6a5d">&#34;MoveResizeTo&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;x&gt;1%&lt;/x&gt;
+</span></span><span style="display:flex;"><span>    &lt;y&gt;-2%&lt;/y&gt;
+</span></span><span style="display:flex;"><span>    &lt;height&gt;47%&lt;/height&gt;
+</span></span><span style="display:flex;"><span>    &lt;width&gt;49%&lt;/width&gt;
+</span></span><span style="display:flex;"><span>  &lt;/action&gt;
+</span></span><span style="display:flex;"><span>&lt;/keybind&gt;
+</span></span><span style="display:flex;"><span>&lt;keybind key=<span style="color:#fc6a5d">&#34;W-l&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;action name=<span style="color:#fc6a5d">&#34;Unmaximize&#34;</span>/&gt;
+</span></span><span style="display:flex;"><span>  &lt;action name=<span style="color:#fc6a5d">&#34;MoveResizeTo&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;x&gt;-1%&lt;/x&gt;
+</span></span><span style="display:flex;"><span>    &lt;y&gt;-2%&lt;/y&gt;
+</span></span><span style="display:flex;"><span>    &lt;height&gt;47%&lt;/height&gt;
+</span></span><span style="display:flex;"><span>    &lt;width&gt;48%&lt;/width&gt;
+</span></span><span style="display:flex;"><span>  &lt;/action&gt;
+</span></span><span style="display:flex;"><span>&lt;/keybind&gt;
+</span></span><span style="display:flex;"><span><span style="color:#6c7986">&lt;!-- gaps 6 windows --&gt;</span>
+</span></span><span style="display:flex;"><span>&lt;keybind key=<span style="color:#fc6a5d">&#34;S-W-z&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;action name=<span style="color:#fc6a5d">&#34;Unmaximize&#34;</span>/&gt;
+</span></span><span style="display:flex;"><span>  &lt;action name=<span style="color:#fc6a5d">&#34;MoveResizeTo&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;x&gt;1%&lt;/x&gt;
+</span></span><span style="display:flex;"><span>    &lt;y&gt;2%&lt;/y&gt;
+</span></span><span style="display:flex;"><span>    &lt;height&gt;47%&lt;/height&gt;
+</span></span><span style="display:flex;"><span>    &lt;width&gt;32%&lt;/width&gt;
+</span></span><span style="display:flex;"><span>  &lt;/action&gt;
+</span></span><span style="display:flex;"><span>&lt;/keybind&gt;
+</span></span><span style="display:flex;"><span>&lt;keybind key=<span style="color:#fc6a5d">&#34;S-W-x&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;action name=<span style="color:#fc6a5d">&#34;Unmaximize&#34;</span>/&gt;
+</span></span><span style="display:flex;"><span>  &lt;action name=<span style="color:#fc6a5d">&#34;MoveResizeTo&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;x&gt;34%&lt;/x&gt;
+</span></span><span style="display:flex;"><span>    &lt;y&gt;2%&lt;/y&gt;
+</span></span><span style="display:flex;"><span>    &lt;height&gt;47%&lt;/height&gt;
+</span></span><span style="display:flex;"><span>    &lt;width&gt;32%&lt;/width&gt;
+</span></span><span style="display:flex;"><span>  &lt;/action&gt;
+</span></span><span style="display:flex;"><span>&lt;/keybind&gt;
+</span></span><span style="display:flex;"><span>&lt;keybind key=<span style="color:#fc6a5d">&#34;S-W-c&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;action name=<span style="color:#fc6a5d">&#34;Unmaximize&#34;</span>/&gt;
+</span></span><span style="display:flex;"><span>  &lt;action name=<span style="color:#fc6a5d">&#34;MoveResizeTo&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;x&gt;-1%&lt;/x&gt;
+</span></span><span style="display:flex;"><span>    &lt;y&gt;2%&lt;/y&gt;
+</span></span><span style="display:flex;"><span>    &lt;height&gt;47%&lt;/height&gt;
+</span></span><span style="display:flex;"><span>    &lt;width&gt;32%&lt;/width&gt;
+</span></span><span style="display:flex;"><span>  &lt;/action&gt;
+</span></span><span style="display:flex;"><span>&lt;/keybind&gt;
+</span></span><span style="display:flex;"><span>&lt;keybind key=<span style="color:#fc6a5d">&#34;C-W-z&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;action name=<span style="color:#fc6a5d">&#34;Unmaximize&#34;</span>/&gt;
+</span></span><span style="display:flex;"><span>  &lt;action name=<span style="color:#fc6a5d">&#34;MoveResizeTo&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;x&gt;1%&lt;/x&gt;
+</span></span><span style="display:flex;"><span>    &lt;y&gt;-2%&lt;/y&gt;
+</span></span><span style="display:flex;"><span>    &lt;height&gt;47%&lt;/height&gt;
+</span></span><span style="display:flex;"><span>    &lt;width&gt;32%&lt;/width&gt;
+</span></span><span style="display:flex;"><span>  &lt;/action&gt;
+</span></span><span style="display:flex;"><span>&lt;/keybind&gt;
+</span></span><span style="display:flex;"><span>&lt;keybind key=<span style="color:#fc6a5d">&#34;C-W-x&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;action name=<span style="color:#fc6a5d">&#34;Unmaximize&#34;</span>/&gt;
+</span></span><span style="display:flex;"><span>  &lt;action name=<span style="color:#fc6a5d">&#34;MoveResizeTo&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;x&gt;34%&lt;/x&gt;
+</span></span><span style="display:flex;"><span>    &lt;y&gt;-2%&lt;/y&gt;
+</span></span><span style="display:flex;"><span>    &lt;height&gt;47%&lt;/height&gt;
+</span></span><span style="display:flex;"><span>    &lt;width&gt;32%&lt;/width&gt;
+</span></span><span style="display:flex;"><span>  &lt;/action&gt;
+</span></span><span style="display:flex;"><span>&lt;/keybind&gt;
+</span></span><span style="display:flex;"><span>&lt;keybind key=<span style="color:#fc6a5d">&#34;C-W-c&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;action name=<span style="color:#fc6a5d">&#34;Unmaximize&#34;</span>/&gt;
+</span></span><span style="display:flex;"><span>  &lt;action name=<span style="color:#fc6a5d">&#34;MoveResizeTo&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;x&gt;-1%&lt;/x&gt;
+</span></span><span style="display:flex;"><span>    &lt;y&gt;-2%&lt;/y&gt;
+</span></span><span style="display:flex;"><span>    &lt;height&gt;47%&lt;/height&gt;
+</span></span><span style="display:flex;"><span>    &lt;width&gt;32%&lt;/width&gt;
+</span></span><span style="display:flex;"><span>  &lt;/action&gt;
+</span></span><span style="display:flex;"><span>&lt;/keybind&gt;
+</span></span></code></pre><h3 id="cheatsheet">Cheatsheet</h3>
+<p>Need cheat sheet?</p>
+<p>I'll give you for free</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Super + Alt + Up</td>
+<td>TIle window to upper half</td>
+</tr>
+<tr>
+<td>Super + Alt + Down</td>
+<td>Tile window to bottom half</td>
+</tr>
+<tr>
+<td>Super + Alt + Right</td>
+<td>Tile window to half right</td>
+</tr>
+<tr>
+<td>Super + Alt + Left</td>
+<td>Tile window to half left</td>
+</tr>
+<tr>
+<td>Super + z</td>
+<td>Tile window 1/3 to right</td>
+</tr>
+<tr>
+<td>Super + x</td>
+<td>Tile window 1/3 to middle</td>
+</tr>
+<tr>
+<td>Super + c</td>
+<td>Tile window 1/3 to left</td>
+</tr>
+<tr>
+<td>Super + h</td>
+<td>Tile window 1/4 to top right</td>
+</tr>
+<tr>
+<td>Super + j</td>
+<td>Tile window 1/4 to top left</td>
+</tr>
+<tr>
+<td>Super + k</td>
+<td>Tile window 1/4 to bottom right</td>
+</tr>
+<tr>
+<td>Super + l</td>
+<td>Tile window 1/4 to bottom left</td>
+</tr>
+<tr>
+<td>Super + Shift + z</td>
+<td>Tile window 1/6 to top right</td>
+</tr>
+<tr>
+<td>Super + Shift + x</td>
+<td>Tile window 1/6 to top middle</td>
+</tr>
+<tr>
+<td>Super + Shift + c</td>
+<td>Tile window 1/6 to top left</td>
+</tr>
+<tr>
+<td>Super + Control + z</td>
+<td>Tile window 1/6 to bottom right</td>
+</tr>
+<tr>
+<td>Super + Control + x</td>
+<td>Tile window 1/6 to bottom middle</td>
+</tr>
+<tr>
+<td>Super + Control + c</td>
+<td>Tile window 1/6 to bottom left</td>
+</tr>
+</tbody>
+</table>
+<h3 id="pros">Pros:</h3>
+<ul>
+<li>Fast</li>
+</ul>
+<p>It will respond right away after we press the shortcut.</p>
+<ul>
+<li>Fluid</li>
+</ul>
+<p>Because we use percent, if we change our resolution or project our monitor to different monitor, the size and placement of the window won't be awkward.</p>
+<h3 id="cons">Cons:</h3>
+<ul>
+<li>Margin changed when given different resolution</li>
+</ul>
+<p>While using percent can make our window resizing fluid. It will break the grid margin.</p>
+<h2 id="grid">grid</h2>
+<p>With that limitation, Twily has made a script to tile windows into grid using wmctrl and xdotool in bash scripting. You can download it <a href="http://twily.info/scripts/grid#view">here</a>. The advantages is that it will give you constant margin . You can easily change it from within the script. It will also works with other NETWM compilant window manager.</p>
+<p>However, the default script has a disadvantage. The width and height of the monitor is hardcoded into the script. We don't want that, right? We want it to follow the current resolution, so when go to portrait mode, the tiling will also working great.</p>
+<p>You can add and change few lines of code to achieve that. First we get the current resolution with <code>xrandr</code>, add code below after <code>if [ &quot;$WNAME&quot; == &quot;Desktop&quot; ]; then exit 3; fi</code> line</p>
+<pre tabindex="0" style="color:#fff;background-color:#1f1f24;"><code><span style="display:flex;"><span><span style="color:#41a1c0">RES</span>=<span style="color:#fc5fa3">$(</span>xrandr --query | grep <span style="color:#fc6a5d">&#39; connected&#39;</span> | grep -o <span style="color:#fc6a5d">&#39;[0-9][0-9]*x[0-9][0-9]*[^ ]*&#39;</span> | sed -r <span style="color:#fc6a5d">&#39;s/^[^0-9]*([0-9]+x[0-9]+).*$/\1/&#39;</span><span style="color:#fc5fa3">)</span>
+</span></span></code></pre><p>In my 1600x900 resolution, the <code>RES</code> variable will return <code>1600x900</code>, and if i use portrait mode it will return <code>900x1600</code>. After that we need to change <code>W</code> and <code>H</code> variable so it get the resolution correctly.</p>
+<pre tabindex="0" style="color:#fff;background-color:#1f1f24;"><code><span style="display:flex;"><span><span style="color:#41a1c0">W</span>=<span style="color:#fc5fa3">$(</span><span style="color:#d0a8ff">echo</span> <span style="color:#41a1c0">$RES</span> | cut -d <span style="color:#fc6a5d">&#34;x&#34;</span> -f 1<span style="color:#fc5fa3">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#41a1c0">H</span>=<span style="color:#fc5fa3">$(</span><span style="color:#d0a8ff">echo</span> <span style="color:#41a1c0">$RES</span> | cut -d <span style="color:#fc6a5d">&#34;x&#34;</span> -f 2<span style="color:#fc5fa3">)</span>
+</span></span></code></pre><p>Thats it! I know the execution time will drastically longer, in my case from 0.002 seconds into 0.240 seconds. But, hey, i'm using traditional harddisk in my machine. It shouldn't be that long with modern machine that use SSD (wish i can buy it soon :D ). Right now, i'm only using grid method so i can bind other key to other task.</p>
+<p>Thanks for reading!</p>
+
+</div>
+</body>

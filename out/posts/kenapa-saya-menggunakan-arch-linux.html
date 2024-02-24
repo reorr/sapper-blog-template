@@ -1,0 +1,142 @@
+<header><style>
+    /* CSS Reset */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    
+	/* Import Inconsolata font */
+    @import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&display=swap');
+
+	:root {
+		--text-color: #333; /* Default text color */
+		--background-color: #fff; /* Default background color */
+	}
+
+	@media (prefers-color-scheme: dark) {
+		/* Dark theme */
+		:root {
+		  --text-color: #ddd; /* Dark text color */
+		  --background-color: #222; /* Dark background color */
+		}
+	}
+
+	/* For screens wider than 1200px (desktops and large screens) */
+	@media only screen and (min-width: 1200px) {
+		#container {
+			max-width: 800px;
+			margin: 0 auto; /* Center the div horizontally */
+		}
+	}
+	
+	/* For screens wider than 992px but less than or equal to 1200px (large desktops) */
+	@media only screen and (max-width: 1200px) {
+		#container {
+			max-width: 600px;
+			margin: 0 auto; /* Center the div horizontally */
+		}
+	}
+	
+	/* For screens wider than 576px but less than or equal to 992px (tablets and smaller desktops) */
+	@media only screen and (max-width: 992px) {
+		#container {
+			max-width: calc(100% - 20px);
+			margin: 0 auto; /* Center the div horizontally */
+		}
+	}
+	
+	/* For screens less than or equal to 576px (mobile devices) */
+	@media only screen and (max-width: 576px) {
+		#container {
+			width: calc(100% - 20px); /* Full width minus 20px margin */
+			margin-left: 10px; /* Add left margin to align with the body */
+			margin-right: 10px; /* Add right margin to align with the body */
+		}
+	}
+
+	body {
+		color: var(--text-color);
+		background-color: var(--background-color);
+	}
+
+	#container {
+		padding: 10px;
+	}
+
+	p {
+        margin-bottom: 2rem;
+		text-align: justify;
+		line-height: 1.5;
+    }
+
+	pre {
+		display: inline-block;
+		white-space: nowrap;
+		overflow-x: auto;
+		overflow-y: clip;
+		width: 100%;
+		padding: 1rem;
+		border-radius: 0.5rem;
+	}
+
+	/* Apply Inconsolata font to code elements within p and pre elements */
+	p code,
+	pre code {
+		font-family: 'Inconsolata', monospace;
+	}
+	
+	p code {
+		padding: 0.1rem 0.5rem;
+		border-radius: 0.25rem;
+		color: var(--code-text-color);
+		background-color: var(--code-background-color);
+	}
+	
+	/* Dark and light mode for code elements within p and pre elements */
+	@media (prefers-color-scheme: dark) {
+		p code {
+			--code-text-color: #eee; /* Dark code text color */
+			--code-background-color: #444; /* Dark code background color */
+		}
+	}
+	
+	@media (prefers-color-scheme: light) {
+		p code {
+			--code-text-color: #333; /* Light code text color */
+			--code-background-color: #f0f0f0; /* Light code background color */
+		}
+	}
+
+	img {
+		width: 100%;
+	}
+	</style></header>
+<body>
+<div id="container">
+<h1 id="kenapa-saya-menggunakan-arch-linux">Kenapa Saya Menggunakan Arch Linux</h1>
+<hr />
+<p>tags:</p>
+<ul>
+<li>archlinux<br />
+categories:</li>
+<li>Kisah</li>
+<li>Linux</li>
+<li>Random<br />
+featured_image: posts/archlogo.png<br />
+date: 2017-02-11 01:30:16</li>
+</ul>
+<hr />
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p><img src="/static/images/archlogo.png" alt="Archlinux Logo" /></p>
+<p>Seperti biasa sebelum memasuki inti cerita, saya ingin bercerita terlebih dahulu. Sudah lebih dari setahun sejak <a href="https://chamelemon.wordpress.com/2016/01/19/sayonara-windows-sebuah-ucapan-perpisahan-kepada-seorang-kawan/">tulisan pertama saya</a> yang berarti sudah lebih dari setahun pula saya bermigrasi penuh dari Windows ke Linux.</p>
+<p>Sistem operasi berbasisi Linux yang pertama kali saya gunakan adalah Ubuntu, karena dari saran-saran yang saya baca, untuk pemula disarankan menggunakan Ubuntu. Setelah Ubuntu saya beralih ke Elementary OS, ya, memang Elementary OS masih berbasis Ubuntu, tapi bukan sekedar fork dan ditambah perangkat lunak ini itu, melainkan membangun perangkat lunak standar destop dan lingkungan destopnya sendiri. Setelah bosan dengan Ubuntu dan turunanya saya ingin mencoba Arch Linux.</p>
+<p>Kenapa Arch Linux? Simpel jawaban saya waktu itu, biar bisa pamer, pada waktu itu masih jaman menggunakan distro yang tidak populer di kelas, ada yang menggunakan OpenSuse, BlackBox, Manjaro. Tetapi saya masih ragu untuk menginstall Arch Linux, karena saya masih berpikir &quot;Ah, nginstall arch linux ribet banget, pake <em>command-command</em> nggak jelas&quot;. Maka saya memutuskan menggunakan AntergOS, walaupun berbasis Arch Linux dan tetap mengadopsi sistem <em>rolling release</em>-nya, tetapi pemasangan AntergOS sudah menggunakan GUI, jadi nyaman. Saat ini lah yang menyebabkan saya jatuh hati pada Arch Linux (Padahal pake aja belum).</p>
+<p>Lanjut, saya menggunakan distro manjaro karena ingin merasakan perbedaannya, setelah tahu perbedaanyya dan merasa sudah memahami tentang apa saja yang dibutuhkan untuk pemasangan Arch Linux, saya mulai memberanikan diri memasang Arch Linux. Saya memasang Arch Linux dengan archlinux bootstrap yang saya jalankan melalui bootable usb Ubuntu 16.04. Setelah selesai sampailah saya di dunia yang penuh dengan kegelapan. Petualangan pun dilanjutkan dengan memasang perangkat lunak lingkungan destop dan pemutar video dan beberapa perangkat lunak pendukung lain, maka jadilah sistem operasi yang sudah siap dipakai.</p>
+<p>Hingga saat ini saya masih menggunakan Arch Linux, hanya saja berganti lingkungan, yang tadinya i686 menjadi x86<em>64, karena banyak perangkat lunak yang sudah tidak didukung untuk i686. Ini intinya, jika sekarang saya ditanya kenapa sih memakai Arch Linux, jawabnya mudah saja &quot;Karena simpel&quot; Iya simpel alias sederhana, misal saat ingin memasang perangkat lunak yang tidak ada di lumbung, tinggal cari di AUR dan pasang dengan yaourt, tidak perlu susah-susah menambahkan lumbung lain.<br />
+Perintahnya juga mudah <code> $ yaourt -S {perangkat lunak yang ingin dipasang}</code> atau juga dapat meng-_compile</em>-nya langsung dari sumbernya. Dengan alasan itu juga kita menjadi paham apa saya yang terpasang di perangkat kita dan bila ada suatu masalah dapat lebih mudah menanganinya.</p>
+<p>Sekian dari saya, selamat ngalong!</p>
+
+</div>
+</body>

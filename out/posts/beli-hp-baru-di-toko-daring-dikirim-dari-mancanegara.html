@@ -1,120 +1,11 @@
-package main
-
-import (
-	"bytes"
-	"fmt"
-	"io/fs"
-	"os"
-	"path/filepath"
-
-	"github.com/yuin/goldmark"
-	highlighting "github.com/yuin/goldmark-highlighting/v2"
-	"github.com/yuin/goldmark/extension"
-	"github.com/yuin/goldmark/parser"
-	"github.com/yuin/goldmark/renderer/html"
-)
-
-func main() {
-	if len(os.Args) < 2 {
-		fmt.Println("Usage: go run main.go <source> [destination]")
-		return
-	}
-
-	source := os.Args[1]
-	destination := "out"
-	if len(os.Args) > 2 {
-		destination = os.Args[2]
-	}
-
-	err := processFiles(source, destination)
-	if err != nil {
-		panic(err)
-	}
-}
-
-func processFiles(source, destination string) error {
-	return filepath.Walk(source, func(path string, info fs.FileInfo, err error) error {
-		if err != nil {
-			return err
-		}
-
-		if info.IsDir() {
-			return nil // Skip directories
-		}
-
-		if filepath.Ext(path) == ".md" {
-			err := convertMarkdownToHTML(path, source, destination)
-			if err != nil {
-				return err
-			}
-		}
-
-		return nil
-	})
-}
-
-func convertMarkdownToHTML(source, root, destination string) error {
-	dat, err := os.ReadFile(source)
-	if err != nil {
-		return err
-	}
-
-	md := goldmark.New(
-		goldmark.WithExtensions(
-			extension.GFM,
-			highlighting.NewHighlighting(
-				highlighting.WithStyle("xcode-dark"),
-			),
-		),
-		goldmark.WithParserOptions(
-			parser.WithAutoHeadingID(),
-		),
-		goldmark.WithRendererOptions(
-			html.WithHardWraps(),
-			html.WithXHTML(),
-		),
-	)
-
-	var buf bytes.Buffer
-	if err := md.Convert(dat, &buf); err != nil {
-		return err
-	}
-
-	output := buf.String()
-	relPath, err := filepath.Rel(root, source)
-	if err != nil {
-		return err
-	}
-	outputPath := filepath.Join(destination, relPath[:len(relPath)-len(filepath.Ext(relPath))]+".html")
-	outputDir := filepath.Dir(outputPath)
-
-	err = os.MkdirAll(outputDir, 0755)
-	if err != nil {
-		return err
-	}
-
-	output = fmt.Sprintf("<div id=\"container\">\n%s\n</div>", output)
-	output = fmt.Sprintf("<body>\n%s\n</body>", output)
-	output = fmt.Sprintf("<header><style>%s%s</style></header>\n%s", getCSSReset(), getCSSStyles(), output)
-
-	return os.WriteFile(outputPath, []byte(output), 0644)
-}
-
-func getCSSReset() string {
-	// Define CSS reset styles here
-	return `
+<header><style>
     /* CSS Reset */
     * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
     }
-    `
-}
-
-func getCSSStyles() string {
-	// Define your CSS styles here
-	return `
+    
 	/* Import Inconsolata font */
     @import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&display=swap');
 
@@ -220,5 +111,30 @@ func getCSSStyles() string {
 	img {
 		width: 100%;
 	}
-	`
-}
+	</style></header>
+<body>
+<div id="container">
+<h1 id="beli-hp-baru---oukitel-k6000">Beli HP Baru - Oukitel K6000</h1>
+<hr />
+<p>tags:</p>
+<ul>
+<li>smartphone<br />
+categories:</li>
+<li>Android</li>
+<li>Kisah</li>
+<li>Random<br />
+featured_image: posts/box-oukitel-4000.jpg<br />
+date: 2017-01-04 09:58:02</li>
+</ul>
+<hr />
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p><img src="/static/images/box-oukitel-k6000.jpg" alt="Box Oukitel K600" /></p>
+<p>Akhir tahun lalu hp saya yang lama evercoss a74a rusak, emmc-nya kena karena kesalahan saya saat wipe partisi. Sebelumnya saya juga sudah punya niat untuk membeli hp baru, tapi masih belum beli karena eman. Akhirnya saya browsing untuk mencari hp yang pas untuk kebutuhan saya sehari-hari, internetan, baca komik dan itu saja saya rasa. Maka saya membutuhkan hp dengan kapasitas baterai yang besar. Setelah menjelajah beberapa saat, saya menemukan beberapa hp yang saya rasa pas untuk saya, Oukitel K4000 dan Oukitel K6000.</p>
+<p>Setelah saya menjelajah beberapa toko daring, saya menemukan tidak ada penjual yang mau mengirimkan Oukitel K4000 ke Indonesia, yang ada hanya K4000 lite. Saya pun beralih ke K6000 dan saya menemukannya di salah satu toko daring Indonesia <a href="https://www.mataharimall.com/obn-oukitel-k6000-5-5-grey-1364784.html">mataharimall.com</a> penjualnya berasal dari hongkong. Ternyata sedang ada diskon produk tersebut sebesar 45%, tanpa pikir panjang saya langsung checkout dan pergi ke ATM untuk melakukan pembayaran. Saya mengisi alamat pengiriman dengan alamat rumah karena saya berencana pulang minggu depan.</p>
+<p><img src="/static/images/oukitel-phone.jpg" alt="Penampakan Oukitel K6000" /></p>
+<p>Hari senin pun tiba, saya berangkat dari malang pukul 8.00 dengan menggunakan angkot dari gang di depan kontrakan ke Terminal Landungsari, dilanjutkan dengan bis antarkota dalam provinsi, bis Bagong dengan tujuan jombang. Setelah sampai di terminal saya menunggu bis tujuan solo. Singkat cerita, saya sampai di rumah sekitar pukul 18.30 WIB, karena pada saat itu masih dalam rangka liburan hari raya.</p>
+<p>Setelah menyalami kedua orang tua, saya langsung masuk kamar, betapa senangnya saya ketika tahu bahwa hp yang saya pesan sudah sampai di rumah! Tapi dengan keadaan box yang telah terbuka (dibuka oleh kakak saya). Karena itulah saya tidak jadi mengambil video unboxing. Sekarang sudah lebih dari seminggu saya menggunakan hp ini, mungkin nanti saya akan membuat review berupa tulisan dan gambar yang akan saya pos di blog ini. Sekian dan terima kasih.</p>
+
+</div>
+</body>

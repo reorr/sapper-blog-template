@@ -1,0 +1,139 @@
+<header><style>
+    /* CSS Reset */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    
+	/* Import Inconsolata font */
+    @import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&display=swap');
+
+	:root {
+		--text-color: #333; /* Default text color */
+		--background-color: #fff; /* Default background color */
+	}
+
+	@media (prefers-color-scheme: dark) {
+		/* Dark theme */
+		:root {
+		  --text-color: #ddd; /* Dark text color */
+		  --background-color: #222; /* Dark background color */
+		}
+	}
+
+	/* For screens wider than 1200px (desktops and large screens) */
+	@media only screen and (min-width: 1200px) {
+		#container {
+			max-width: 800px;
+			margin: 0 auto; /* Center the div horizontally */
+		}
+	}
+	
+	/* For screens wider than 992px but less than or equal to 1200px (large desktops) */
+	@media only screen and (max-width: 1200px) {
+		#container {
+			max-width: 600px;
+			margin: 0 auto; /* Center the div horizontally */
+		}
+	}
+	
+	/* For screens wider than 576px but less than or equal to 992px (tablets and smaller desktops) */
+	@media only screen and (max-width: 992px) {
+		#container {
+			max-width: calc(100% - 20px);
+			margin: 0 auto; /* Center the div horizontally */
+		}
+	}
+	
+	/* For screens less than or equal to 576px (mobile devices) */
+	@media only screen and (max-width: 576px) {
+		#container {
+			width: calc(100% - 20px); /* Full width minus 20px margin */
+			margin-left: 10px; /* Add left margin to align with the body */
+			margin-right: 10px; /* Add right margin to align with the body */
+		}
+	}
+
+	body {
+		color: var(--text-color);
+		background-color: var(--background-color);
+	}
+
+	#container {
+		padding: 10px;
+	}
+
+	p {
+        margin-bottom: 2rem;
+		text-align: justify;
+		line-height: 1.5;
+    }
+
+	pre {
+		display: inline-block;
+		white-space: nowrap;
+		overflow-x: auto;
+		overflow-y: clip;
+		width: 100%;
+		padding: 1rem;
+		border-radius: 0.5rem;
+	}
+
+	/* Apply Inconsolata font to code elements within p and pre elements */
+	p code,
+	pre code {
+		font-family: 'Inconsolata', monospace;
+	}
+	
+	p code {
+		padding: 0.1rem 0.5rem;
+		border-radius: 0.25rem;
+		color: var(--code-text-color);
+		background-color: var(--code-background-color);
+	}
+	
+	/* Dark and light mode for code elements within p and pre elements */
+	@media (prefers-color-scheme: dark) {
+		p code {
+			--code-text-color: #eee; /* Dark code text color */
+			--code-background-color: #444; /* Dark code background color */
+		}
+	}
+	
+	@media (prefers-color-scheme: light) {
+		p code {
+			--code-text-color: #333; /* Light code text color */
+			--code-background-color: #f0f0f0; /* Light code background color */
+		}
+	}
+
+	img {
+		width: 100%;
+	}
+	</style></header>
+<body>
+<div id="container">
+<h1 id="developing-flutter-apps-without-phone-using-flutter-desktop-embedder">Developing Flutter Apps Without Phone Using Flutter Desktop Embedder</h1>
+<h2 id="date-2019-01-09-172721">date: 2019-01-09 17:27:21</h2>
+<p>tags:</p>
+<ul>
+<li>flutter<br />
+categories:</li>
+<li>Programming</li>
+</ul>
+<hr />
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>I've life without phone for about half year, since i lost my phone in bus. Not exactly without phone, my <a href="https://github.com/drzln">friend</a> lend me his phone, a Samsung Galaxy Y with Android Gingerbread. Which i can't use to test my app in it. While it's don't affect my everyday life, when i need to or rather when i want to build android apps, i don't have device to test it. I can't relly on my machine, with just traditional HDD and 4GB of RAM.</p>
+<p>A couple of days ago, my friend (the same that lend me his phone) told me about interesting project in github, <a href="https://github.com/putraxor/flutter_desktop_launcher">flutter_desktop_launcher</a>. This project allow us to test our app directly on desktop. It also support Hot Reload. Pretty interesting doesn't it?</p>
+<p>But when my friend try that project, he encounter an error. It cant find a library named <code>libjsoncpp.so.1</code>. Even after installing it. At that time i haven't tried it. My guess is that it's a precompiled binary and the library version doesn't match.</p>
+<p>Last night, after installing dark and flutter sdk, i try that project and encounter the same error. The project that hosted in github doesn't have any source code, only the binary that compressed into zip. What can i do?</p>
+<p>After reading the README once again i click a link that linked to youtube video that demonstrate how to use the project. Voila! It turns out that he only compile it from another repository. The original repository is <a href="https://github.com/google/flutter-desktop-embedding">flutter-dektop-embedding by google</a>. It's time to compile it.</p>
+<p>The instruction in README pretty much explain all step that we needs to compile the binary and library. Because i use Linux on my machine, so i must go to the <code>library&gt;linux</code> folder and run <code>$ make</code>. After finished, we need to compile the binary. Go to <code>example&gt;linux</code> folder. Edit the <code>Makefile</code> so the output directory is in the current directory, we don't want it to be in <code>out</code> directory and must run it with <code>./out/flutter_embedder_example</code>. After all finished, i copy the compiled library which is <code>lib</code> folder and <code>flutter_embedder_example</code> file to my <code>$PATH</code>, in my case it's in <code>$HOME/.bin</code>. Run <code>$ flutter_embedder_example</code> in terminal, and debug it via Visual Studio Code. Read <a href="https://github.com/google/flutter-desktop-embedding/blob/master/Debugging.md">this</a> how to debug our app.</p>
+<p>If you use archlinux or it's derivative, i've upload my compiled binary <a href="https://mega.nz/#!7cxUTQAa!gjQxwuamxnV3Isw7NdVIv54FfIx17qgWAOJXrNMQOD4">here</a>. Dont forget to run <code># pacman -Syyu</code> because i updated my machine yesterday.</p>
+<p><img src="/static/images/flutter-desktop.png" alt="flutter hello word in desktop" /></p>
+<p>Thanks for reading, have a decent day!</p>
+
+</div>
+</body>

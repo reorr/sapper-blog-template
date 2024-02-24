@@ -1,120 +1,11 @@
-package main
-
-import (
-	"bytes"
-	"fmt"
-	"io/fs"
-	"os"
-	"path/filepath"
-
-	"github.com/yuin/goldmark"
-	highlighting "github.com/yuin/goldmark-highlighting/v2"
-	"github.com/yuin/goldmark/extension"
-	"github.com/yuin/goldmark/parser"
-	"github.com/yuin/goldmark/renderer/html"
-)
-
-func main() {
-	if len(os.Args) < 2 {
-		fmt.Println("Usage: go run main.go <source> [destination]")
-		return
-	}
-
-	source := os.Args[1]
-	destination := "out"
-	if len(os.Args) > 2 {
-		destination = os.Args[2]
-	}
-
-	err := processFiles(source, destination)
-	if err != nil {
-		panic(err)
-	}
-}
-
-func processFiles(source, destination string) error {
-	return filepath.Walk(source, func(path string, info fs.FileInfo, err error) error {
-		if err != nil {
-			return err
-		}
-
-		if info.IsDir() {
-			return nil // Skip directories
-		}
-
-		if filepath.Ext(path) == ".md" {
-			err := convertMarkdownToHTML(path, source, destination)
-			if err != nil {
-				return err
-			}
-		}
-
-		return nil
-	})
-}
-
-func convertMarkdownToHTML(source, root, destination string) error {
-	dat, err := os.ReadFile(source)
-	if err != nil {
-		return err
-	}
-
-	md := goldmark.New(
-		goldmark.WithExtensions(
-			extension.GFM,
-			highlighting.NewHighlighting(
-				highlighting.WithStyle("xcode-dark"),
-			),
-		),
-		goldmark.WithParserOptions(
-			parser.WithAutoHeadingID(),
-		),
-		goldmark.WithRendererOptions(
-			html.WithHardWraps(),
-			html.WithXHTML(),
-		),
-	)
-
-	var buf bytes.Buffer
-	if err := md.Convert(dat, &buf); err != nil {
-		return err
-	}
-
-	output := buf.String()
-	relPath, err := filepath.Rel(root, source)
-	if err != nil {
-		return err
-	}
-	outputPath := filepath.Join(destination, relPath[:len(relPath)-len(filepath.Ext(relPath))]+".html")
-	outputDir := filepath.Dir(outputPath)
-
-	err = os.MkdirAll(outputDir, 0755)
-	if err != nil {
-		return err
-	}
-
-	output = fmt.Sprintf("<div id=\"container\">\n%s\n</div>", output)
-	output = fmt.Sprintf("<body>\n%s\n</body>", output)
-	output = fmt.Sprintf("<header><style>%s%s</style></header>\n%s", getCSSReset(), getCSSStyles(), output)
-
-	return os.WriteFile(outputPath, []byte(output), 0644)
-}
-
-func getCSSReset() string {
-	// Define CSS reset styles here
-	return `
+<header><style>
     /* CSS Reset */
     * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
     }
-    `
-}
-
-func getCSSStyles() string {
-	// Define your CSS styles here
-	return `
+    
 	/* Import Inconsolata font */
     @import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&display=swap');
 
@@ -220,5 +111,39 @@ func getCSSStyles() string {
 	img {
 		width: 100%;
 	}
-	`
-}
+	</style></header>
+<body>
+<div id="container">
+<h1 id="bakemonogatari-ncop-5---sugar-sweet-nightmare-mimpi-buruk-semanis-gula">Bakemonogatari NCOP 5 - SUGAR SWEET NIGHTMARE (MIMPI BURUK SEMANIS GULA)</h1>
+<hr />
+<p>tags:</p>
+<ul>
+<li>bakemonogatari</li>
+<li>bernyanyi</li>
+<li>ngesub</li>
+<li>tsubasa cat<br />
+categories:</li>
+<li>ncop<br />
+featured_image: posts/sugar-sweet-nightmare.jpg<br />
+date: 2016-05-21 11:45:57</li>
+</ul>
+<hr />
+<ul>
+<li>Translirik: reorr</li>
+<li>Typeshit: reorr</li>
+<li>Qc: -</li>
+</ul>
+<!-- raw HTML omitted -->
+<p><img src="/static/images/sugar-sweet-nightmare.jpg" alt="Sugar Sweet Nightmare" /></p>
+<ul>
+<li>Translirik: reorr</li>
+<li>Typeshit: reorr</li>
+<li>Qc: -</li>
+</ul>
+<h3 id="google-drive">Google Drive</h3>
+<p><a href="https://drive.google.com/open?id=0B-XpBI8zNUN4ZUhPSy1vTTJpQnc">[Chamelemon]Bakemonogatari - NCOP 5 [BD 1280x720 x264 FLAC][3319A18B].mkv</a></p>
+<h3 id="solidfiles">Solidfiles</h3>
+<p><a href="https://www.solidfiles.com/v/y8aQqZ7ZwmG4v">[Chamelemon]Bakemonogatari - NCOP 5 [BD 1280x720 x264 FLAC][3319A18B].mkv</a> <a href="https://drive.google.com/open?id=0B-XpBI8zNUN4akJhX2xlTGE0eEE">Pantat dan font</a></p>
+
+</div>
+</body>

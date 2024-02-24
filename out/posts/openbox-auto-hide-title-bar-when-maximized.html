@@ -1,0 +1,172 @@
+<header><style>
+    /* CSS Reset */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    
+	/* Import Inconsolata font */
+    @import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&display=swap');
+
+	:root {
+		--text-color: #333; /* Default text color */
+		--background-color: #fff; /* Default background color */
+	}
+
+	@media (prefers-color-scheme: dark) {
+		/* Dark theme */
+		:root {
+		  --text-color: #ddd; /* Dark text color */
+		  --background-color: #222; /* Dark background color */
+		}
+	}
+
+	/* For screens wider than 1200px (desktops and large screens) */
+	@media only screen and (min-width: 1200px) {
+		#container {
+			max-width: 800px;
+			margin: 0 auto; /* Center the div horizontally */
+		}
+	}
+	
+	/* For screens wider than 992px but less than or equal to 1200px (large desktops) */
+	@media only screen and (max-width: 1200px) {
+		#container {
+			max-width: 600px;
+			margin: 0 auto; /* Center the div horizontally */
+		}
+	}
+	
+	/* For screens wider than 576px but less than or equal to 992px (tablets and smaller desktops) */
+	@media only screen and (max-width: 992px) {
+		#container {
+			max-width: calc(100% - 20px);
+			margin: 0 auto; /* Center the div horizontally */
+		}
+	}
+	
+	/* For screens less than or equal to 576px (mobile devices) */
+	@media only screen and (max-width: 576px) {
+		#container {
+			width: calc(100% - 20px); /* Full width minus 20px margin */
+			margin-left: 10px; /* Add left margin to align with the body */
+			margin-right: 10px; /* Add right margin to align with the body */
+		}
+	}
+
+	body {
+		color: var(--text-color);
+		background-color: var(--background-color);
+	}
+
+	#container {
+		padding: 10px;
+	}
+
+	p {
+        margin-bottom: 2rem;
+		text-align: justify;
+		line-height: 1.5;
+    }
+
+	pre {
+		display: inline-block;
+		white-space: nowrap;
+		overflow-x: auto;
+		overflow-y: clip;
+		width: 100%;
+		padding: 1rem;
+		border-radius: 0.5rem;
+	}
+
+	/* Apply Inconsolata font to code elements within p and pre elements */
+	p code,
+	pre code {
+		font-family: 'Inconsolata', monospace;
+	}
+	
+	p code {
+		padding: 0.1rem 0.5rem;
+		border-radius: 0.25rem;
+		color: var(--code-text-color);
+		background-color: var(--code-background-color);
+	}
+	
+	/* Dark and light mode for code elements within p and pre elements */
+	@media (prefers-color-scheme: dark) {
+		p code {
+			--code-text-color: #eee; /* Dark code text color */
+			--code-background-color: #444; /* Dark code background color */
+		}
+	}
+	
+	@media (prefers-color-scheme: light) {
+		p code {
+			--code-text-color: #333; /* Light code text color */
+			--code-background-color: #f0f0f0; /* Light code background color */
+		}
+	}
+
+	img {
+		width: 100%;
+	}
+	</style></header>
+<body>
+<div id="container">
+<h1 id="openbox-auto-hide-title-bar-when-maximized">'[Openbox] auto hide title bar when maximized'</h1>
+<h2 id="date-2019-01-02-201311">date: 2019-01-02 20:13:11</h2>
+<p>tags:</p>
+<ul>
+<li>archlinux</li>
+<li>openbox</li>
+<li>wm</li>
+<li>ricing<br />
+categories:</li>
+<li>Linux<br />
+featured_image: posts/auto-hide-header.png</li>
+</ul>
+<hr />
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p><img src="/static/images/autohide-titlebar/auto-hide-header.png" alt="Auto Hide Header" /></p>
+<h2 id="prelude">Prelude</h2>
+<p>Recently i'm stumbled upon something. It's an urgent matter. In my current openbox setup, I'm using vala-appmenu-plugin in xfce panel. The reason is simple, i want to get more space without losing important information from my panel like netspeed, notification, and other important things. With appmenu-plugin i can get rid menubar on all over my apps and get that tiny space back, but i'm not satisfied. That title bar under my panel looks so ugly.</p>
+<p><img src="/static/images/autohide-titlebar/ugly-title-bar-on-maximized.png" alt="ugly-title-bar-on-maximized" />(Read JoJolion, thanks)</p>
+<h2 id="the-openbox-things">The openbox things</h2>
+<p>In openbox we can't get rid the title bar. You can remove the border and the window action button, but that's it. Yeah, we can remove it with provided <code>undecorate window</code> action. That means i've to undecorate it everytime i maximize a window. How ridiculous! Btw, in xfce they have option to hide title bar whe maximized.</p>
+<h2 id="the-options">The options</h2>
+<p>Okay, there is two tricky options that can be done by default openbox setting.</p>
+<ol>
+<li>Undecorate all windows when appears</li>
+<li>Toggle window decoration when maximized</li>
+</ol>
+<p>The first option is not the one that i wanted. The behaviour that i want is the one in xfce, it only hide the title bar when maximized. I want to have a nice small title bar on my window when it's not maximized.<br />
+The second option also out of question. It certainly can do the job. But, duh it's complicating my <code>rc.xml</code> file. Also if a window undecorated, when it maximized, it will be decorated.</p>
+<h2 id="solution">Solution</h2>
+<p><a href="https://github.com/baverman/orcsome">Orcsome</a> is a scripting extension for NETWM compilant window managers written in python. With it we can extend wm fuctions. So, I can create script to do what I want, undecorate window when maximized and undecorate window if not maximized. Fortunately someone has write the configuration for that. Below is the configuration that i found.</p>
+<pre tabindex="0" style="color:#fff;background-color:#1f1f24;"><code><span style="display:flex;"><span><span style="color:#fc5fa3">from</span> orcsome <span style="color:#fc5fa3">import</span> get_wm
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>wm = get_wm()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@wm.on_manage
+</span></span><span style="display:flex;"><span><span style="color:#fc5fa3">def</span> <span style="color:#41a1c0">on_manage</span>():
+</span></span><span style="display:flex;"><span>    @wm.on_property_change(wm.event_window, <span style="color:#fc6a5d">&#39;_NET_WM_STATE&#39;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#fc5fa3">def</span> <span style="color:#41a1c0">property_was_set</span>():
+</span></span><span style="display:flex;"><span>        w = wm.event_window
+</span></span><span style="display:flex;"><span>        <span style="color:#fc5fa3">if</span> w.maximized_vert and w.maximized_horz:
+</span></span><span style="display:flex;"><span>            <span style="color:#fc5fa3">if</span> w.decorated:
+</span></span><span style="display:flex;"><span>                wm.set_window_state(w, decorate=<span style="color:#fc5fa3">False</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#fc5fa3">else</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#fc5fa3">if</span> not w.decorated:
+</span></span><span style="display:flex;"><span>                wm.set_window_state(w, decorate=<span style="color:#fc5fa3">True</span>)
+</span></span></code></pre><p>Copy that to <code>$HOME/.config/orcsome/rc.py</code>.</p>
+<p>Now, what you need to do is install orcsome and run it at startup. You can install orcsome with <code>pip</code>. Because orcsome written with <code>python2</code> and archlinux that I use is using <code>python3</code> by default, I install it with <code>$ pip2 install orcsome</code> command. If you are using debian devariative, <code>pip</code> is the right command.</p>
+<p>Here's my current wm behaviour</p>
+<p><img src="/static/images/autohide-titlebar/auto-hide-title-bar.gif" alt="auto-hide-title-bar" /></p>
+<h2 id="how-to-make-everyone-happy">How to make everyone happy</h2>
+<!-- raw HTML omitted -->
+<p>Source: <a href="https://dglava.github.io/en/orcsome.html">https://dglava.github.io/en/orcsome.html</a></p>
+
+</div>
+</body>

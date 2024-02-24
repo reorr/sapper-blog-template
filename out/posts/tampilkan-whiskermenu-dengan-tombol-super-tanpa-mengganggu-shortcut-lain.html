@@ -1,0 +1,146 @@
+<header><style>
+    /* CSS Reset */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    
+	/* Import Inconsolata font */
+    @import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&display=swap');
+
+	:root {
+		--text-color: #333; /* Default text color */
+		--background-color: #fff; /* Default background color */
+	}
+
+	@media (prefers-color-scheme: dark) {
+		/* Dark theme */
+		:root {
+		  --text-color: #ddd; /* Dark text color */
+		  --background-color: #222; /* Dark background color */
+		}
+	}
+
+	/* For screens wider than 1200px (desktops and large screens) */
+	@media only screen and (min-width: 1200px) {
+		#container {
+			max-width: 800px;
+			margin: 0 auto; /* Center the div horizontally */
+		}
+	}
+	
+	/* For screens wider than 992px but less than or equal to 1200px (large desktops) */
+	@media only screen and (max-width: 1200px) {
+		#container {
+			max-width: 600px;
+			margin: 0 auto; /* Center the div horizontally */
+		}
+	}
+	
+	/* For screens wider than 576px but less than or equal to 992px (tablets and smaller desktops) */
+	@media only screen and (max-width: 992px) {
+		#container {
+			max-width: calc(100% - 20px);
+			margin: 0 auto; /* Center the div horizontally */
+		}
+	}
+	
+	/* For screens less than or equal to 576px (mobile devices) */
+	@media only screen and (max-width: 576px) {
+		#container {
+			width: calc(100% - 20px); /* Full width minus 20px margin */
+			margin-left: 10px; /* Add left margin to align with the body */
+			margin-right: 10px; /* Add right margin to align with the body */
+		}
+	}
+
+	body {
+		color: var(--text-color);
+		background-color: var(--background-color);
+	}
+
+	#container {
+		padding: 10px;
+	}
+
+	p {
+        margin-bottom: 2rem;
+		text-align: justify;
+		line-height: 1.5;
+    }
+
+	pre {
+		display: inline-block;
+		white-space: nowrap;
+		overflow-x: auto;
+		overflow-y: clip;
+		width: 100%;
+		padding: 1rem;
+		border-radius: 0.5rem;
+	}
+
+	/* Apply Inconsolata font to code elements within p and pre elements */
+	p code,
+	pre code {
+		font-family: 'Inconsolata', monospace;
+	}
+	
+	p code {
+		padding: 0.1rem 0.5rem;
+		border-radius: 0.25rem;
+		color: var(--code-text-color);
+		background-color: var(--code-background-color);
+	}
+	
+	/* Dark and light mode for code elements within p and pre elements */
+	@media (prefers-color-scheme: dark) {
+		p code {
+			--code-text-color: #eee; /* Dark code text color */
+			--code-background-color: #444; /* Dark code background color */
+		}
+	}
+	
+	@media (prefers-color-scheme: light) {
+		p code {
+			--code-text-color: #333; /* Light code text color */
+			--code-background-color: #f0f0f0; /* Light code background color */
+		}
+	}
+
+	img {
+		width: 100%;
+	}
+	</style></header>
+<body>
+<div id="container">
+<h1 id="tampilkan-whiskermenu-dengan-tombol-super-tanpa-mengganggu-shortcut-lain">Tampilkan Whiskermenu Dengan Tombol Super Tanpa Mengganggu Shortcut Lain</h1>
+<hr />
+<p>tags:</p>
+<ul>
+<li>archlinux</li>
+<li>xfce<br />
+categories:</li>
+<li>Destop</li>
+<li>Linux<br />
+featured_image: posts/xcape+whiskermenu.png<br />
+date: 2017-09-11 08:23:59</li>
+</ul>
+<hr />
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p><img src="/static/images/xcape-whiskermenu.png" alt="xcape + whiskermenu" /></p>
+<p>Ya, benar, saya menulis tulisan ini semata-mata sebagai reminder bagi diri sendiri. Sudah lama saya menggunakan cara ini, namun setiap kali sehabis instal ulang, saya selalu lupa dan harus mengubek-ubek internet lagi. Tombol super pastinya sangat penting bagi kamu yang terbiasa dengan shortcut pada sistem operasi windows seperti kombinasi <code>w+e</code> yang akan membuka explorer, <code>w+r</code> yang akan membuka program run, dan lain-lain. Pun setelah saya bermigrasi ke linux. Kebiasaan itu tidak akan hilang dengan mudah, banyak sekali shorcut yang saya gunakan menggunakan tombol modifier super.</p>
+<p>Masalah muncul ketika saya menggunakan tombol super sebagai shotcut untuk membuka popup whiskermenu. Setiap saya menekan shortcut yang menggunakan tombol super, popup whiskermenu selalu muncul, dan itu sangat mengganggu. Jalan paling mudah adalah mengganti shortcut popup whiskermenu menjadi <code>w+space</code> atau dengan tambahan key lain, namun hal itu sangat tidak nyaman bagi saya. Bagi yang mengalami masalah serupa, tenang saja, ada solusi mudah dan praktis, yaitu dengan menggunakan <a href="https://github.com/alols/xcape">xcape</a>.</p>
+<p>xcape mengizinkan key modifier digunakan sebagai key lain saat ditekan dan dilepaskan. Contohnya begini, dengan menggunakan xcape kamu dapat menekan tombol super, namun mesinmu akan membacanya sebagai kombinasi tombol <code>ctrl+shift+alt+super</code>. Dengan begitu saat kamu menekan shortcut yang menggunakan kombinasi tombol super, whisker menu tidak akan keluar, karena whiskermenu di bind ke tombol <code>ctrl+shift+alt+super</code>.</p>
+<p>Kita langsung masuk ke prakteknya saja</p>
+<ol>
+<li>Instal xcape, bisa dari repo, aur maupun compil sendiri.</li>
+<li>Buka xfce4-keyboard-settings &gt; klik application shortcuts &gt; klik add &gt; tulisakan &quot;xfce4-popup-whiskermenu &quot; &gt; klik ok &gt; tekan tombol <code>Ctrl+Shift+Alt+Super</code>.</li>
+<li>Buka xfce4-session-settings &gt; klik application autostart &gt; klik add &gt; beri nama semaumu &gt; tuliskan <code>xcape -e &quot;Super\_L=Control\_L|Shift\_L|Alt\_L|Super_L&quot;</code> pada bagian command &gt; klik ok.</li>
+<li>Logout dan login kembali, coba tekan tombol super, maka popup whiskermenu akan keluar.</li>
+</ol>
+<p>Sekian dari saya, bila sempat nanti akan saya update dengan gambar, wassalamu'alaikum.</p>
+
+</div>
+</body>

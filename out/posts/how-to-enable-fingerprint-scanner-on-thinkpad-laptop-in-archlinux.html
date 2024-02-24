@@ -1,120 +1,11 @@
-package main
-
-import (
-	"bytes"
-	"fmt"
-	"io/fs"
-	"os"
-	"path/filepath"
-
-	"github.com/yuin/goldmark"
-	highlighting "github.com/yuin/goldmark-highlighting/v2"
-	"github.com/yuin/goldmark/extension"
-	"github.com/yuin/goldmark/parser"
-	"github.com/yuin/goldmark/renderer/html"
-)
-
-func main() {
-	if len(os.Args) < 2 {
-		fmt.Println("Usage: go run main.go <source> [destination]")
-		return
-	}
-
-	source := os.Args[1]
-	destination := "out"
-	if len(os.Args) > 2 {
-		destination = os.Args[2]
-	}
-
-	err := processFiles(source, destination)
-	if err != nil {
-		panic(err)
-	}
-}
-
-func processFiles(source, destination string) error {
-	return filepath.Walk(source, func(path string, info fs.FileInfo, err error) error {
-		if err != nil {
-			return err
-		}
-
-		if info.IsDir() {
-			return nil // Skip directories
-		}
-
-		if filepath.Ext(path) == ".md" {
-			err := convertMarkdownToHTML(path, source, destination)
-			if err != nil {
-				return err
-			}
-		}
-
-		return nil
-	})
-}
-
-func convertMarkdownToHTML(source, root, destination string) error {
-	dat, err := os.ReadFile(source)
-	if err != nil {
-		return err
-	}
-
-	md := goldmark.New(
-		goldmark.WithExtensions(
-			extension.GFM,
-			highlighting.NewHighlighting(
-				highlighting.WithStyle("xcode-dark"),
-			),
-		),
-		goldmark.WithParserOptions(
-			parser.WithAutoHeadingID(),
-		),
-		goldmark.WithRendererOptions(
-			html.WithHardWraps(),
-			html.WithXHTML(),
-		),
-	)
-
-	var buf bytes.Buffer
-	if err := md.Convert(dat, &buf); err != nil {
-		return err
-	}
-
-	output := buf.String()
-	relPath, err := filepath.Rel(root, source)
-	if err != nil {
-		return err
-	}
-	outputPath := filepath.Join(destination, relPath[:len(relPath)-len(filepath.Ext(relPath))]+".html")
-	outputDir := filepath.Dir(outputPath)
-
-	err = os.MkdirAll(outputDir, 0755)
-	if err != nil {
-		return err
-	}
-
-	output = fmt.Sprintf("<div id=\"container\">\n%s\n</div>", output)
-	output = fmt.Sprintf("<body>\n%s\n</body>", output)
-	output = fmt.Sprintf("<header><style>%s%s</style></header>\n%s", getCSSReset(), getCSSStyles(), output)
-
-	return os.WriteFile(outputPath, []byte(output), 0644)
-}
-
-func getCSSReset() string {
-	// Define CSS reset styles here
-	return `
+<header><style>
     /* CSS Reset */
     * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
     }
-    `
-}
-
-func getCSSStyles() string {
-	// Define your CSS styles here
-	return `
+    
 	/* Import Inconsolata font */
     @import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&display=swap');
 
@@ -220,5 +111,54 @@ func getCSSStyles() string {
 	img {
 		width: 100%;
 	}
-	`
-}
+	</style></header>
+<body>
+<div id="container">
+<h1 id="how-to-enable-fingerprint-scanner-on-thinkpad-laptop-in-archlinux">How To Enable Fingerprint Scanner on Thinkpad Laptop in Archlinux</h1>
+<hr />
+<p>tags:</p>
+<ul>
+<li>archlinux</li>
+<li>fingerprint</li>
+<li>t430s<br />
+categories:</li>
+<li>Linux</li>
+<li>Thinkpad</li>
+<li>tutorial<br />
+featured_image: posts/thinkpad_fingerprint.jpg<br />
+date: 2018-08-07 23:00:47</li>
+</ul>
+<hr />
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p><img src="/static/images/thinkpad_fingerprint.jpg" alt="Thinkpad T430s" /></p>
+<p>Yeah, as a linux user i know how tiring is typing a password each we run command as super user or simply login. Not again, i've purchased Thinkpad T430s with fingerprint scanner, but without setting it up it wont do anything. This is a very brief tutorial how to enable fingerprint scanner in Archlinux system.</p>
+<ol>
+<li>
+<p>Install <code>fingerprint-gui</code> from AUR</p>
+</li>
+<li>
+<p>Make <code>/lib/udev/rules.d/40-libfprint0-custom.rules</code> as follows</p>
+</li>
+</ol>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<ol start="3">
+<li>Add yourself to the plugdev group</li>
+</ol>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<ol start="4">
+<li>Reboot</li>
+<li>Open fingerprint-gui to do the enrolment</li>
+<li>Add this line to <code>/etc/pam.d/sudo</code>, <code>/etc/pam.d/su</code>, <code>/etc/pam.d/login</code> and <code>/etc/pam.d/polkit-1</code></li>
+</ol>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<ol start="7">
+<li>Try do <code>$ sudo something</code> in terminal, you should be able to use your fingerprint for authentication</li>
+<li>You can also login in tty with your fingerprint</li>
+</ol>
+
+</div>
+</body>

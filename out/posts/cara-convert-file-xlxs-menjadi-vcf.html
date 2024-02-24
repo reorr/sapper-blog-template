@@ -1,0 +1,182 @@
+<header><style>
+    /* CSS Reset */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    
+	/* Import Inconsolata font */
+    @import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&display=swap');
+
+	:root {
+		--text-color: #333; /* Default text color */
+		--background-color: #fff; /* Default background color */
+	}
+
+	@media (prefers-color-scheme: dark) {
+		/* Dark theme */
+		:root {
+		  --text-color: #ddd; /* Dark text color */
+		  --background-color: #222; /* Dark background color */
+		}
+	}
+
+	/* For screens wider than 1200px (desktops and large screens) */
+	@media only screen and (min-width: 1200px) {
+		#container {
+			max-width: 800px;
+			margin: 0 auto; /* Center the div horizontally */
+		}
+	}
+	
+	/* For screens wider than 992px but less than or equal to 1200px (large desktops) */
+	@media only screen and (max-width: 1200px) {
+		#container {
+			max-width: 600px;
+			margin: 0 auto; /* Center the div horizontally */
+		}
+	}
+	
+	/* For screens wider than 576px but less than or equal to 992px (tablets and smaller desktops) */
+	@media only screen and (max-width: 992px) {
+		#container {
+			max-width: calc(100% - 20px);
+			margin: 0 auto; /* Center the div horizontally */
+		}
+	}
+	
+	/* For screens less than or equal to 576px (mobile devices) */
+	@media only screen and (max-width: 576px) {
+		#container {
+			width: calc(100% - 20px); /* Full width minus 20px margin */
+			margin-left: 10px; /* Add left margin to align with the body */
+			margin-right: 10px; /* Add right margin to align with the body */
+		}
+	}
+
+	body {
+		color: var(--text-color);
+		background-color: var(--background-color);
+	}
+
+	#container {
+		padding: 10px;
+	}
+
+	p {
+        margin-bottom: 2rem;
+		text-align: justify;
+		line-height: 1.5;
+    }
+
+	pre {
+		display: inline-block;
+		white-space: nowrap;
+		overflow-x: auto;
+		overflow-y: clip;
+		width: 100%;
+		padding: 1rem;
+		border-radius: 0.5rem;
+	}
+
+	/* Apply Inconsolata font to code elements within p and pre elements */
+	p code,
+	pre code {
+		font-family: 'Inconsolata', monospace;
+	}
+	
+	p code {
+		padding: 0.1rem 0.5rem;
+		border-radius: 0.25rem;
+		color: var(--code-text-color);
+		background-color: var(--code-background-color);
+	}
+	
+	/* Dark and light mode for code elements within p and pre elements */
+	@media (prefers-color-scheme: dark) {
+		p code {
+			--code-text-color: #eee; /* Dark code text color */
+			--code-background-color: #444; /* Dark code background color */
+		}
+	}
+	
+	@media (prefers-color-scheme: light) {
+		p code {
+			--code-text-color: #333; /* Light code text color */
+			--code-background-color: #f0f0f0; /* Light code background color */
+		}
+	}
+
+	img {
+		width: 100%;
+	}
+	</style></header>
+<body>
+<div id="container">
+<h1 id="cara-convert-file-xlxs-menjadi-vcf">Cara Convert File .xlxs Menjadi .vcf</h1>
+<hr />
+<p>tags:</p>
+<ul>
+<li>Android</li>
+<li>google</li>
+<li>maba<br />
+categories:</li>
+<li>cloud</li>
+<li>tutorial<br />
+featured_image: posts/convert-vcf.png<br />
+date: 2018-05-30 16:33:18</li>
+</ul>
+<hr />
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p><img src="/static/images/convert-vcf/convert-vcf.png" alt="VCF" /></p>
+<p>Jadi gini, sekarang musim maba, jadi saya inisiatif membuat grup whatsapp untuk mewadahi mahasiswa baru agar dapat berkomunikasi. Tapi, untuk menambah anggota grup di whatsapp, kita harus menyimpan kontak ke penyimpanan telepon terlebih dahulu. Masak iya sih harus nyimpen nomor hp satu per satu. Capek deh.</p>
+<p>Makanya saya cari cara untuk mengubah file .xlsx dari google form menjadi .vcf agar dapat dengan mudah diimport ke kontak di hp tanpa harus memasukkan data satu per satu. Peralatan yang dibutuhkan hanya google spreadsheet dan google contact.</p>
+<p>Langsung saja kita mulai.</p>
+<ol>
+<li>Buat kolom dengan format sebagai berikut</li>
+</ol>
+<p><img src="/static/images/convert-vcf/convert-vcf-01.png" alt="filexlxs" /></p>
+<ol start="2">
+<li>Download sebagai .cvs</li>
+</ol>
+<p><img src="/static/images/convert-vcf/convert-vcf-02.png" alt="impocvs" /></p>
+<ol start="3">
+<li>Buka <a href="https://www.google.com/contacts/">google contacts</a></li>
+<li>Pilih menu impor</li>
+</ol>
+<p><img src="/static/images/convert-vcf/convert-vcf-03.png" alt="2018-05-30-160541_1600x900_scrot" /></p>
+<ol start="5">
+<li>Impor dari CSV atau vCard</li>
+</ol>
+<p><img src="/static/images/convert-vcf/convert-vcf-04.png" alt="2018-05-30-160603_564x628_scrot" /></p>
+<ol start="6">
+<li>Pilih buka versi lama</li>
+</ol>
+<p><img src="/static/images/convert-vcf/convert-vcf-05.png" alt="2018-05-30-160651_521x359_scrot" /></p>
+<ol start="7">
+<li>Pilih menu lainnya &gt; impor</li>
+</ol>
+<p><img src="/static/images/convert-vcf/convert-vcf-06.png" alt="imporcvs" /></p>
+<ol start="8">
+<li>Browse file .cvs yang telah kita download tadi, lalu klik impor</li>
+</ol>
+<p><img src="/static/images/convert-vcf/convert-vcf-07.png" alt="2018-05-30-160806_563x351_scrot" /></p>
+<ol start="9">
+<li>Kontak telah berhasil diimpor ke google contacts</li>
+<li>Sekarang kita unduh file .vcf agar dapat diimpor ke hp</li>
+<li>Pilih menu lainnya &gt; ekspor</li>
+</ol>
+<p><img src="/static/images/convert-vcf/convert-vcf-08.png" alt="ekspor" /></p>
+<ol start="12">
+<li>Pada menu kontak mana yang akan diekspor, pilih grup yang baru saja diimpor, lalu pada format ekspor, pilih vCard, selanjutnya klik ekspor dan file .vcf akan diunduh</li>
+</ol>
+<p><img src="/static/images/convert-vcf/convert-vcf-09.png" alt="2018-05-30-161010_557x561_scrot" /></p>
+<ol start="13">
+<li>Salin file .vcf yang telah kita unduh tadi ke hp dan buka dengan kontak</li>
+<li>Tara, kontak telah tersimpan dalam hp</li>
+</ol>
+
+</div>
+</body>
