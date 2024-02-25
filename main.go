@@ -1,11 +1,16 @@
 package main
 
 import (
+	"bufio"
 	"bytes"
 	"fmt"
 	"io/fs"
+	"io/ioutil"
 	"os"
 	"path/filepath"
+	"sort"
+	"strings"
+	"time"
 
 	"github.com/yuin/goldmark"
 	highlighting "github.com/yuin/goldmark-highlighting/v2"
@@ -15,6 +20,7 @@ import (
 )
 
 func main() {
+	begin := time.Now()
 	if len(os.Args) < 2 {
 		fmt.Println("Usage: go run main.go <source> [destination]")
 		return
@@ -30,16 +36,29 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	fmt.Println(time.Since(begin).Microseconds())
 }
 
 func processFiles(source, destination string) error {
-	return filepath.Walk(source, func(path string, info fs.FileInfo, err error) error {
+	err := filepath.Walk(source, func(path string, info fs.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
 
+		if info.IsDir() && path == source {
+			return nil // Skip non-directories and the source directory itself
+		}
+
 		if info.IsDir() {
-			return nil // Skip directories
+			relDirPath, err := filepath.Rel(source, path)
+			if err != nil {
+				return err
+			}
+
+			err = createIndexHTML(path, destination, relDirPath)
+			if err != nil {
+				return err
+			}
 		}
 
 		if filepath.Ext(path) == ".md" {
@@ -51,6 +70,67 @@ func processFiles(source, destination string) error {
 
 		return nil
 	})
+
+	return err
+}
+
+func createIndexHTML(directory, destination, relDirPath string) error {
+	files, err := ioutil.ReadDir(directory)
+	if err != nil {
+		return err
+	}
+
+	var markdownFiles []fileInfo
+
+	for _, file := range files {
+		if !file.IsDir() && filepath.Ext(file.Name()) == ".md" {
+			markdownFiles = append(markdownFiles, fileInfo{
+				Name: file.Name(),
+				Time: file.ModTime(),
+			})
+		}
+	}
+
+	sort.Slice(markdownFiles, func(i, j int) bool {
+		return markdownFiles[i].Time.After(markdownFiles[j].Time)
+	})
+
+	var links []string
+	for _, file := range markdownFiles {
+		linkName, err := getHeading1Text(filepath.Join(directory, file.Name))
+		if err != nil {
+			continue
+		}
+		link := fmt.Sprintf("<li><a href=\"%s\">%s</a></li>", file.htmlFileName(), linkName)
+		links = append(links, link)
+	}
+
+	indexContent := fmt.Sprintf("<ul>%s</ul>", strings.Join(links, ""))
+
+	indexFilePath := filepath.Join(destination, relDirPath, "index.html")
+	return os.WriteFile(indexFilePath, []byte(indexContent), 0644)
+}
+
+func getHeading1Text(filePath string) (string, error) {
+	file, err := os.Open(filePath)
+	if err != nil {
+		return "", err
+	}
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		line := scanner.Text()
+		if strings.HasPrefix(line, "# ") {
+			return strings.TrimPrefix(line, "# "), nil
+		}
+	}
+
+	if err := scanner.Err(); err != nil {
+		return "", err
+	}
+
+	return "", fmt.Errorf("heading 1 not found")
 }
 
 func convertMarkdownToHTML(source, root, destination string) error {
@@ -221,4 +301,13 @@ func getCSSStyles() string {
 		width: 100%;
 	}
 	`
+}
+
+type fileInfo struct {
+	Name string
+	Time time.Time
+}
+
+func (f fileInfo) htmlFileName() string {
+	return fmt.Sprintf("%s.html", f.Name[:len(f.Name)-len(filepath.Ext(f.Name))])
 }
