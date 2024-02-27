@@ -175,11 +175,16 @@ func convertMarkdownToHTML(source, root, destination string) error {
 
 	output = fmt.Sprintf("<div id=\"container\">\n%s\n</div>", output)
 	output = fmt.Sprintf("<body>\n%s\n</body>", output)
-	output = fmt.Sprintf("<header><style>%s%s</style></header>\n%s", getCSSReset(), getCSSStyles(), output)
+	output = fmt.Sprintf("<header><style>%s%s%s</style></header>\n%s", getImportCSSFonts(), getCSSReset(), getCSSStyles(), output)
 
 	return os.WriteFile(outputPath, []byte(output), 0644)
 }
-
+func getImportCSSFonts() string {
+	return `
+		/* Import Inconsolata font */
+		@import url('https://fonts.googleapis.com/css2?family=Glory:ital,wght@0,100..800;1,100..800&family=Inconsolata:wght@200..900&display=swap');
+	`
+}
 func getCSSReset() string {
 	// Define CSS reset styles here
 	return `
@@ -195,9 +200,6 @@ func getCSSReset() string {
 func getCSSStyles() string {
 	// Define your CSS styles here
 	return `
-	/* Import Inconsolata font */
-    @import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&display=swap');
-
 	:root {
 		--text-color: #333; /* Default text color */
 		--background-color: #fff; /* Default background color */
@@ -247,6 +249,11 @@ func getCSSStyles() string {
 	body {
 		color: var(--text-color);
 		background-color: var(--background-color);
+		font-size: 1.25rem;
+		font-family: "Glory", sans-serif;
+		font-optical-sizing: auto;
+		// font-weight: <weight>;
+		font-style: normal;
 	}
 
 	#container {
@@ -254,9 +261,10 @@ func getCSSStyles() string {
 	}
 
 	p {
-        margin-bottom: 2rem;
+        margin-bottom: 1rem;
 		text-align: justify;
 		line-height: 1.5;
+		padding: 0 10px;
     }
 
 	pre {
@@ -299,6 +307,25 @@ func getCSSStyles() string {
 
 	img {
 		width: 100%;
+	}
+
+	ol,
+	ul {
+		margin-left: 2rem;
+	}
+
+	h1 {
+		text-align: center;
+		font-size: 1.5rem;
+	}
+
+	h2,
+	h3 {
+		margin-left: 0.5rem;
+	}
+
+	hr {
+		margin: 1rem 0;
 	}
 	`
 }
